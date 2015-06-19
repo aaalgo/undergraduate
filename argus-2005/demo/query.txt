@@ -1,0 +1,29 @@
+// 最近5分钟内，天网查询的关键字以及其出现次数
+select key,count(*) from log preceding 5 minutes group by key
+
+// 最近200次查询内，天网查询的关键字以及其出现次数
+select key,count(*) from log preceding 200 rows group by key
+
+如上两个查询对于统计目前群众比较感兴趣的问题非常有意义
+
+
+
+// 每执行20个查询统记一下这20个查询分别在搜索引擎缓冲区中命中和不命中的次数
+select cached,count(*) from log every 20 rows group by cached
+
+// 查询最近20个查询分别在搜索引擎缓冲区中命中和不命中的次数
+select cached,count(*) from log preceding 20 rows group by cached
+
+如上两个查询对于搜索引擎的开发和管理者来说非常的有意义
+
+
+
+// 给出最近五分钟内搜索结果大于5个的查询关键字
+select key,result from log preceding 5 minutes where result > 5
+
+这个查询对于统计网络上现在哪方面信息比较多比较有意义。
+
+
+
+
+

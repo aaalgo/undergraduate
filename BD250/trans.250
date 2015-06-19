@@ -1,0 +1,31 @@
+    LED1 = 0x88;
+    LED2 = 0x89;
+    LED3 = 0x8A;
+    LED4 = 0x8B;
+    LED5 = 0x8C;
+    LED6 = 0x8D;
+    DOTS = 0x8E;
+    DIP1 = 0x80;
+    DIP2 = 0x81;
+    DIP3 = 0x82;
+    TRANS = 0xA8;
+    LIGHT1 = 0x90;
+    LIGHT2 = 0x91;
+    CONST 1;
+    STORE TRANS;
+    LOAD TRANS;
+LOOP : LOAD DIP2;
+    STORE LIGHT1;
+    LOAD LIGHT1;
+    STORE LED1;
+    LOAD LED1;
+    LOAD DIP3;
+    STORE DOTS;
+    LOAD DOTS;
+    LOAD DIP1;
+    NOT;
+    STORE TRANS;
+    LOAD TRANS;
+    JMP LOOP;
+END.
+

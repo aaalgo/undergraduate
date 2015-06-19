@@ -1,0 +1,116 @@
+-- Copyright (C) 1988-2001 Altera Corporation
+-- Any megafunction design, and related net list (encrypted or decrypted),
+-- support information, device programming or simulation file, and any other
+-- associated documentation or information provided by Altera or a partner
+-- under Altera's Megafunction Partnership Program may be used only to
+-- program PLD devices (but not masked PLD devices) from Altera.  Any other
+-- use of such megafunction design, net list, support information, device
+-- programming or simulation file, or any other related documentation or
+-- information is prohibited for any other purpose, including, but not
+-- limited to modification, reverse engineering, de-compiling, or use with
+-- any other silicon devices, unless such use is explicitly licensed under
+-- a separate agreement with Altera or a megafunction partner.  Title to
+-- the intellectual property, including patents, copyrights, trademarks,
+-- trade secrets, or maskworks, embodied in any such megafunction design,
+-- net list, support information, device programming or simulation file, or
+-- any other related documentation or information provided by Altera or a
+-- megafunction partner, remains with Altera, the megafunction partner, or
+-- their respective licensors.  No other licenses, including any licenses
+-- needed under any third party's intellectual property, are provided herein.
+
+
+
+N.C. = No Connect. This pin has no internal connection to the device.
+VCCINT = Dedicated power pin, which MUST be connected to VCC (5.0 volts).
+VCCIO = Dedicated power pin, which MUST be connected to VCC (5.0 volts).
+GNDINT = Dedicated ground pin or unused dedicated input, which MUST be connected to GND.
+GNDIO = Dedicated ground pin, which MUST be connected to GND.
+RESERVED = Unused I/O pin, which MUST be left unconnected.
+
+----------------------------------------------------------------------------
+
+CHIP "cpu" ASSIGNED TO AN EPF10K10LC84-4
+clk                              : 1
+GNDINT                           : 2
+dip23                            : 3
+VCCINT                           : 4
+dip22                            : 5
+dip21                            : 6
+dip20                            : 7
+dip19                            : 8
+dip18                            : 9
+segsel1                          : 10
+segsel0                          : 11
+DATA0                            : 12
+DCLK                             : 13
+nCE                              : 14
+TDI                              : 15
+seg77                            : 16
+seg76                            : 17
+seg75                            : 18
+seg74                            : 19
+VCCINT                           : 20
+seg73                            : 21
+seg72                            : 22
+seg71                            : 23
+seg70                            : 24
+dip7                             : 25
+GNDINT                           : 26
+dip6                             : 27
+dip5                             : 28
+dip4                             : 29
+dip3                             : 30
+MSEL0                            : 31
+MSEL1                            : 32
+VCCINT                           : 33
+nCONFIG                          : 34
+dip2                             : 35
+dip1                             : 36
+dip0                             : 37
+dip15                            : 38
+dip14                            : 39
+VCCINT                           : 40
+GNDINT                           : 41
+GNDINT                           : 42
+GNDINT                           : 43
+dip17                            : 44
+VCCINT                           : 45
+GNDINT                           : 46
+dip13                            : 47
+dip12                            : 48
+dip11                            : 49
+dip10                            : 50
+dip9                             : 51
+dip8                             : 52
+light15                          : 53
+light14                          : 54
+nSTATUS                          : 55
+TRST                             : 56
+TMS                              : 57
+light13                          : 58
+light12                          : 59
+light11                          : 60
+light10                          : 61
+light9                           : 62
+VCCINT                           : 63
+light8                           : 64
+light7                           : 65
+light6                           : 66
+light5                           : 67
+GNDINT                           : 68
+light4                           : 69
+light3                           : 70
+light2                           : 71
+light1                           : 72
+light0                           : 73
+TDO                              : 74
+nCEO                             : 75
+CONF_DONE                        : 76
+TCK                              : 77
+segsel5                          : 78
+segsel4                          : 79
+segsel3                          : 80
+segsel2                          : 81
+GNDINT                           : 82
+reset                            : 83
+dip16                            : 84

@@ -1,0 +1,18 @@
+CFLAGS = -g -I"../include" -DGCC -DLINUX
+OBJS = libtype.o core.o btype.o stream.o udp.o  sql.tab.o lex.sql.o sql_help.o test.o opt.o sql_resolve.o count_window.o timeSlide_window.o timeTumble_window.o
+
+all:	$(OBJS)
+	ar crv libargus.a $(OBJS)
+	gcc test.o libargus.a -o test -lpthread
+	
+yacc:	sql.y
+	bison -d --name-prefix=sql sql.y
+
+lex:	sql.lex
+	flex	-Psql sql.lex
+
+test: test.o
+	gcc test.o libargus.a -o test
+	
+clean:
+	-rm *.o libargus.a lex.sql.c lex.sql.c sql.tab.h

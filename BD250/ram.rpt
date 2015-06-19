@@ -1,0 +1,540 @@
+Project Information                                             d:\cpu\ram.rpt
+
+MAX+plus II Compiler Report File
+Version 10.1 06/12/2001
+Compiled: 07/22/2004 18:58:24
+
+Copyright (C) 1988-2001 Altera Corporation
+Any megafunction design, and related net list (encrypted or decrypted),
+support information, device programming or simulation file, and any other
+associated documentation or information provided by Altera or a partner
+under Altera's Megafunction Partnership Program may be used only to
+program PLD devices (but not masked PLD devices) from Altera.  Any other
+use of such megafunction design, net list, support information, device
+programming or simulation file, or any other related documentation or
+information is prohibited for any other purpose, including, but not
+limited to modification, reverse engineering, de-compiling, or use with
+any other silicon devices, unless such use is explicitly licensed under
+a separate agreement with Altera or a megafunction partner.  Title to
+the intellectual property, including patents, copyrights, trademarks,
+trade secrets, or maskworks, embodied in any such megafunction design,
+net list, support information, device programming or simulation file, or
+any other related documentation or information provided by Altera or a
+megafunction partner, remains with Altera, the megafunction partner, or
+their respective licensors.  No other licenses, including any licenses
+needed under any third party's intellectual property, are provided herein.
+
+
+
+***** Project compilation was successful
+
+
+RAM
+
+
+** DEVICE SUMMARY **
+
+Chip/                     Input Output Bidir  Memory  Memory  			 LCs
+POF       Device          Pins  Pins   Pins   Bits % Utilized  LCs  % Utilized
+
+ram       EPF10K10LC84-3   17     8      0    1024      16 %    0        0  %
+
+User Pins:                 17     8      0  
+
+
+
+Project Information                                             d:\cpu\ram.rpt
+
+** EMBEDDED ARRAYS **
+
+
+|LPM_RAM_DQ:ram|altram:sram|content: MEMORY (
+               width        =    8;
+               depth        =  128;
+               segmentsize  =  128;
+               mode         = MEM_REG_DATAIN_CLK0#MEM_REG_WADDR_CLK0#MEM_REG_WCTRL_CLK0;
+         )
+         OF SEGMENTS (
+               |LPM_RAM_DQ:ram|altram:sram|segment0_7,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_6,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_5,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_4,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_3,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_2,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_1,
+               |LPM_RAM_DQ:ram|altram:sram|segment0_0
+);
+
+
+
+
+Project Information                                             d:\cpu\ram.rpt
+
+** FILE HIERARCHY **
+
+
+
+|lpm_ram_dq:ram|
+|lpm_ram_dq:ram|altram:sram|
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+***** Logic for device 'ram' compiled without errors.
+
+
+
+
+Device: EPF10K10LC84-3
+
+FLEX 10K Configuration Scheme: Passive Serial
+
+Device Options:
+    User-Supplied Start-Up Clock               = OFF
+    Auto-Restart Configuration on Frame Error  = OFF
+    Release Clears Before Tri-States           = OFF
+    Enable Chip_Wide Reset                     = OFF
+    Enable Chip-Wide Output Enable             = OFF
+    Enable INIT_DONE Output                    = OFF
+    JTAG User Code                             = 7f
+
+                                                                         ^     
+                                                                         C     
+                R  R     R     R  R                 R     R  R  R  R     O     
+                E  E     E     E  E                 E     E  E  E  E     N     
+                S  S     S     S  S  V              S  G  S  S  S  S     F     
+                E  E     E     E  E  C     w     a  E  N  E  E  E  E     _  ^  
+                R  R  d  R  d  R  R  C  d  r     d  R  D  R  R  R  R  #  D  n  
+                V  V  i  V  i  V  V  I  i  i  c  d  V  I  V  V  V  V  T  O  C  
+                E  E  n  E  n  E  E  N  n  t  l  r  E  N  E  E  E  E  C  N  E  
+                D  D  4  D  1  D  D  T  5  e  k  4  D  T  D  D  D  D  K  E  O  
+              -----------------------------------------------------------------_ 
+            /  11 10  9  8  7  6  5  4  3  2  1 84 83 82 81 80 79 78 77 76 75   | 
+    ^DATA0 | 12                                                              74 | #TDO 
+     ^DCLK | 13                                                              73 | din7 
+      ^nCE | 14                                                              72 | dout0 
+      #TDI | 15                                                              71 | addr2 
+     addr1 | 16                                                              70 | dout2 
+      din3 | 17                                                              69 | dout7 
+     dout6 | 18                                                              68 | GNDINT 
+     dout1 | 19                                                              67 | RESERVED 
+    VCCINT | 20                                                              66 | RESERVED 
+  RESERVED | 21                                                              65 | RESERVED 
+     dout3 | 22                        EPF10K10LC84-3                        64 | RESERVED 
+     dout4 | 23                                                              63 | VCCINT 
+  RESERVED | 24                                                              62 | RESERVED 
+  RESERVED | 25                                                              61 | RESERVED 
+    GNDINT | 26                                                              60 | RESERVED 
+  RESERVED | 27                                                              59 | RESERVED 
+  RESERVED | 28                                                              58 | RESERVED 
+  RESERVED | 29                                                              57 | #TMS 
+     dout5 | 30                                                              56 | #TRST 
+    ^MSEL0 | 31                                                              55 | ^nSTATUS 
+    ^MSEL1 | 32                                                              54 | RESERVED 
+           |_  33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53  _| 
+             ------------------------------------------------------------------ 
+                V  ^  d  d  a  d  R  V  G  a  a  a  V  G  R  R  R  R  R  R  R  
+                C  n  i  i  d  i  E  C  N  d  d  d  C  N  E  E  E  E  E  E  E  
+                C  C  n  n  d  n  S  C  D  d  d  d  C  D  S  S  S  S  S  S  S  
+                I  O  6  0  r  2  E  I  I  r  r  r  I  I  E  E  E  E  E  E  E  
+                N  N        0     R  N  N  6  3  5  N  N  R  R  R  R  R  R  R  
+                T  F              V  T  T           T  T  V  V  V  V  V  V  V  
+                   I              E                       E  E  E  E  E  E  E  
+                   G              D                       D  D  D  D  D  D  D  
+                                                                               
+                                                                               
+
+
+N.C. = No Connect. This pin has no internal connection to the device.
+VCCINT = Dedicated power pin, which MUST be connected to VCC (5.0 volts).
+VCCIO = Dedicated power pin, which MUST be connected to VCC (5.0 volts).
+GNDINT = Dedicated ground pin or unused dedicated input, which MUST be connected to GND.
+GNDIO = Dedicated ground pin, which MUST be connected to GND.
+RESERVED = Unused I/O pin, which MUST be left unconnected.
+
+^ = Dedicated configuration pin.
++ = Reserved configuration pin, which is tri-stated during user mode.
+* = Reserved configuration pin, which drives out in user mode.
+PDn = Power Down pin. 
+@ = Special-purpose pin. 
+# = JTAG Boundary-Scan Testing/In-System Programming or Configuration Pin. The JTAG inputs TMS and TDI should be tied to VCC and TCK should be tied to GND when not in use.
+& = JTAG pin used for I/O. When used as user I/O, JTAG pins must be kept stable before and during configuration.  JTAG pin stability prevents accidental loading of JTAG instructions.
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+** RESOURCE USAGE **
+
+Logic                Column       Row                                   
+Array                Interconnect Interconnect         Clears/     External  
+Block   Logic Cells  Driven       Driven       Clocks  Presets   Interconnect
+
+
+Embedded             Column       Row                                   
+Array     Embedded   Interconnect Interconnect         Read/      External  
+Block     Cells      Driven       Driven       Clocks  Write    Interconnect
+A25      8/8 (100%)   3/8 ( 37%)   6/8 ( 75%)    1/2    2/2      15/22( 68%)   
+
+
+Total dedicated input pins used:                 6/6      (100%)
+Total I/O pins used:                            19/53     ( 35%)
+Total logic cells used:                          0/576    (  0%)
+Total embedded cells used:                       8/24     ( 33%)
+Total EABs used:                                 1/3      ( 33%)
+Average fan-in:                                 0.00/4    (  0%)
+Total fan-in:                                   0/2304    (  0%)
+
+Total input pins required:                      17
+Total input I/O cell registers required:         0
+Total output pins required:                      8
+Total output I/O cell registers required:        0
+Total buried I/O cell registers required:        0
+Total bidirectional pins required:               0
+Total reserved pins required                     0
+Total logic cells required:                      0
+Total flipflops required:                        0
+Total packed registers required:                 0
+Total logic cells in carry chains:               0
+Total number of carry chains:                    0
+Total logic cells in cascade chains:             0
+Total number of cascade chains:                  0
+Total single-pin Clock Enables required:         0
+Total single-pin Output Enables required:        0
+
+Synthesized logic cells:                         0/ 576   (  0%)
+
+Logic Cell and Embedded Cell Counts
+
+Column:  01  02  03  04  05  06  07  08  09  10  11  12  EA  13  14  15  16  17  18  19  20  21  22  23  24  Total(LC/EC)
+ A:      0   0   0   0   0   0   0   0   0   0   0   0   8   0   0   0   0   0   0   0   0   0   0   0   0      0/8  
+ B:      0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0      0/0  
+ C:      0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0      0/0  
+
+Total:   0   0   0   0   0   0   0   0   0   0   0   0   8   0   0   0   0   0   0   0   0   0   0   0   0      0/8  
+
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+** INPUTS **
+
+                                                    Fan-In    Fan-Out
+ Pin     LC     EC   Row  Col  Primitive    Code      INP  FBK  OUT  FBK  Name
+  37      -     -    -    09      INPUT                0    0    0    8  addr0
+  16      -     -    A    --      INPUT                0    0    0    8  addr1
+  71      -     -    A    --      INPUT                0    0    0    8  addr2
+  43      -     -    -    --      INPUT                0    0    0    8  addr3
+  84      -     -    -    --      INPUT                0    0    0    8  addr4
+  44      -     -    -    --      INPUT                0    0    0    8  addr5
+  42      -     -    -    --      INPUT                0    0    0    8  addr6
+   1      -     -    -    --      INPUT  G             0    0    0    0  clk
+  36      -     -    -    07      INPUT                0    0    0    1  din0
+   7      -     -    -    03      INPUT                0    0    0    1  din1
+  38      -     -    -    10      INPUT                0    0    0    1  din2
+  17      -     -    A    --      INPUT                0    0    0    1  din3
+   9      -     -    -    02      INPUT                0    0    0    1  din4
+   3      -     -    -    12      INPUT                0    0    0    1  din5
+  35      -     -    -    06      INPUT                0    0    0    1  din6
+  73      -     -    A    --      INPUT                0    0    0    1  din7
+   2      -     -    -    --      INPUT  G             0    0    0    0  write
+
+
+Code:
+
+s = Synthesized pin or logic cell
++ = Synchronous flipflop
+/ = Slow slew-rate output
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+@ = Uses single-pin Clock Enable
+& = Uses single-pin Output Enable
+G = Global Source. Fan-out destinations counted here do not include destinations
+that are driven using global routing resources. Refer to the Auto Global Signals,
+Clock Signals, Clear Signals, Synchronous Load Signals, and Synchronous Clear Signals
+Sections of this Report File for information on which signals' fan-outs are used as
+Clock, Clear, Preset, Output Enable, and synchronous Load signals.
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+** OUTPUTS **
+
+       Fed By Fed By                                Fan-In    Fan-Out
+ Pin     LC     EC   Row  Col  Primitive    Code      INP  FBK  OUT  FBK  Name
+  72      -     -    A    --     OUTPUT                0    1    0    0  dout0
+  19      -     -    A    --     OUTPUT                0    1    0    0  dout1
+  70      -     -    A    --     OUTPUT                0    1    0    0  dout2
+  22      -     -    B    --     OUTPUT                0    1    0    0  dout3
+  23      -     -    B    --     OUTPUT                0    1    0    0  dout4
+  30      -     -    C    --     OUTPUT                0    1    0    0  dout5
+  18      -     -    A    --     OUTPUT                0    1    0    0  dout6
+  69      -     -    A    --     OUTPUT                0    1    0    0  dout7
+
+
+Code:
+
+s = Synthesized pin or logic cell
++ = Synchronous flipflop
+/ = Slow slew-rate output
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+@ = Uses single-pin Clock Enable
+& = Uses single-pin Output Enable
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+** BURIED LOGIC **
+
+                                                    Fan-In    Fan-Out
+ IOC     LC     EC   Row  Col  Primitive    Code      INP  FBK  OUT  FBK  Name
+   -      -     3    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_0
+   -      -     4    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_1
+   -      -     1    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_2
+   -      -     2    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_3
+   -      -     7    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_4
+   -      -     8    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_5
+   -      -     6    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_6
+   -      -     5    A    --   MEM_SGMT                8    0    1    0  |LPM_RAM_DQ:ram|altram:sram|segment0_7
+
+
+Code:
+
+s = Synthesized pin or logic cell
++ = Synchronous flipflop
+/ = Slow slew-rate output
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+p = Packed register
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+** FASTTRACK INTERCONNECT UTILIZATION **
+
+Row FastTrack Interconnect:
+
+          Global         Left Half-      Right Half-
+         FastTrack       FastTrack       FastTrack 
+Row     Interconnect    Interconnect    Interconnect    Input Pins     Output Pins     Bidir Pins
+A:      10/ 96( 10%)     7/ 48( 14%)     0/ 48(  0%)    4/16( 25%)      5/16( 31%)     0/16(  0%)
+B:       2/ 96(  2%)     0/ 48(  0%)     0/ 48(  0%)    0/16(  0%)      2/16( 12%)     0/16(  0%)
+C:       1/ 96(  1%)     0/ 48(  0%)     0/ 48(  0%)    0/16(  0%)      1/16(  6%)     0/16(  0%)
+
+
+Column FastTrack Interconnect:
+
+         FastTrack                                 
+Column  Interconnect    Input Pins     Output Pins     Bidir Pins
+01:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+02:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+03:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+04:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+05:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+06:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+07:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+08:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+09:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+10:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+11:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+12:      1/24(  4%)     1/4( 25%)      0/4(  0%)       0/4(  0%)
+13:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+14:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+15:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+16:      1/24(  4%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+17:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+18:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+19:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+20:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+21:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+22:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+23:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+24:      0/24(  0%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+EA:      2/24(  8%)     0/4(  0%)      0/4(  0%)       0/4(  0%)
+
+
+Device-Specific Information:                                    d:\cpu\ram.rpt
+ram
+
+** EQUATIONS **
+
+addr0    : INPUT;
+addr1    : INPUT;
+addr2    : INPUT;
+addr3    : INPUT;
+addr4    : INPUT;
+addr5    : INPUT;
+addr6    : INPUT;
+clk      : INPUT;
+din0     : INPUT;
+din1     : INPUT;
+din2     : INPUT;
+din3     : INPUT;
+din4     : INPUT;
+din5     : INPUT;
+din6     : INPUT;
+din7     : INPUT;
+write    : INPUT;
+
+-- Node name is 'dout0' 
+-- Equation name is 'dout0', type is output 
+dout0    =  _EC3_A;
+
+-- Node name is 'dout1' 
+-- Equation name is 'dout1', type is output 
+dout1    =  _EC4_A;
+
+-- Node name is 'dout2' 
+-- Equation name is 'dout2', type is output 
+dout2    =  _EC1_A;
+
+-- Node name is 'dout3' 
+-- Equation name is 'dout3', type is output 
+dout3    =  _EC2_A;
+
+-- Node name is 'dout4' 
+-- Equation name is 'dout4', type is output 
+dout4    =  _EC7_A;
+
+-- Node name is 'dout5' 
+-- Equation name is 'dout5', type is output 
+dout5    =  _EC8_A;
+
+-- Node name is 'dout6' 
+-- Equation name is 'dout6', type is output 
+dout6    =  _EC6_A;
+
+-- Node name is 'dout7' 
+-- Equation name is 'dout7', type is output 
+dout7    =  _EC5_A;
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_0' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC3_A', type is memory 
+_EC3_A   = MEMORY_SEGMENT( din0, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_1' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC4_A', type is memory 
+_EC4_A   = MEMORY_SEGMENT( din1, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_2' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC1_A', type is memory 
+_EC1_A   = MEMORY_SEGMENT( din2, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_3' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC2_A', type is memory 
+_EC2_A   = MEMORY_SEGMENT( din3, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_4' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC7_A', type is memory 
+_EC7_A   = MEMORY_SEGMENT( din4, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_5' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC8_A', type is memory 
+_EC8_A   = MEMORY_SEGMENT( din5, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_6' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC6_A', type is memory 
+_EC6_A   = MEMORY_SEGMENT( din6, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+-- Node name is '|LPM_RAM_DQ:ram|altram:sram|segment0_7' from file "altram.tdf" line 98, column 12
+-- Equation name is '_EC5_A', type is memory 
+_EC5_A   = MEMORY_SEGMENT( din7, GLOBAL( clk), VCC, GLOBAL( write), VCC, addr0, addr1, addr2, addr3, addr4, addr5, addr6, VCC, VCC, VCC, VCC,);
+
+
+
+Project Information                                             d:\cpu\ram.rpt
+
+** COMPILATION SETTINGS & TIMES **
+
+Processing Menu Commands
+------------------------
+
+Design Doctor                             = off
+
+Logic Synthesis:
+
+   Synthesis Type Used                    = Multi-Level
+
+   Default Synthesis Style                = NORMAL
+
+      Logic option settings in 'NORMAL' style for 'FLEX10K' family
+
+      CARRY_CHAIN                         = ignore
+      CARRY_CHAIN_LENGTH                  = 32
+      CASCADE_CHAIN                       = ignore
+      CASCADE_CHAIN_LENGTH                = 2
+      DECOMPOSE_GATES                     = on
+      DUPLICATE_LOGIC_EXTRACTION          = on
+      MINIMIZATION                        = full
+      MULTI_LEVEL_FACTORING               = on
+      NOT_GATE_PUSH_BACK                  = on
+      REDUCE_LOGIC                        = on
+      REFACTORIZATION                     = on
+      REGISTER_OPTIMIZATION               = on
+      RESYNTHESIZE_NETWORK                = on
+      SLOW_SLEW_RATE                      = off
+      SUBFACTOR_EXTRACTION                = on
+      IGNORE_SOFT_BUFFERS                 = on
+      USE_LPM_FOR_AHDL_OPERATORS          = off
+
+   Other logic synthesis settings:
+
+      Automatic Global Clock              = on
+      Automatic Global Clear              = on
+      Automatic Global Preset             = on
+      Automatic Global Output Enable      = on
+      Automatic Fast I/O                  = off
+      Automatic Register Packing          = off
+      Automatic Open-Drain Pins           = on
+      Automatic Implement in EAB          = off
+      Optimize                            = 5
+
+Default Timing Specifications: None
+
+Cut All Bidir Feedback Timing Paths       = on
+Cut All Clear & Preset Timing Paths       = on
+
+Ignore Timing Assignments                 = off
+
+Functional SNF Extractor                  = off
+
+Linked SNF Extractor                      = off
+Timing SNF Extractor                      = on
+Optimize Timing SNF                       = off
+Generate AHDL TDO File                    = off
+Fitter Settings                           = NORMAL
+Use Quartus Fitter                        = on
+Smart Recompile                           = off
+Total Recompile                           = off
+
+Interfaces Menu Commands
+------------------------
+
+EDIF Netlist Writer                       = off
+Verilog Netlist Writer                    = off
+VHDL Netlist Writer                       = off
+
+Compilation Times
+-----------------
+
+   Compiler Netlist Extractor             00:00:00
+   Database Builder                       00:00:00
+   Logic Synthesizer                      00:00:00
+   Partitioner                            00:00:00
+   Fitter                                 00:00:03
+   Timing SNF Extractor                   00:00:00
+   Assembler                              00:00:01
+   --------------------------             --------
+   Total Time                             00:00:04
+
+
+Memory Allocated
+-----------------
+
+Peak memory allocated during compilation  = 22,605K

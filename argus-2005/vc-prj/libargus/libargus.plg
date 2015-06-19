@@ -1,0 +1,61 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: libargus - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1D4.tmp" with contents
+[
+/nologo /Zp1 /MDd /W3 /Gm /GX /ZI /Od /I "..\..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /Fp"Debug/libargus.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\src\argus\src\oper\equijoin.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1D4.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1D5.tmp" with contents
+[
+/nologo /out:"Debug\libargus.lib" 
+".\Debug\aggre.obj"
+".\Debug\btype.obj"
+".\Debug\expr.obj"
+".\Debug\libtype.obj"
+".\Debug\llist.obj"
+".\Debug\osdept.obj"
+".\Debug\schema.obj"
+".\Debug\type_schema.obj"
+".\Debug\countslidewindow.obj"
+".\Debug\counttumblewindow.obj"
+".\Debug\filter.obj"
+".\Debug\group.obj"
+".\Debug\map.obj"
+".\Debug\sender.obj"
+".\Debug\timer.obj"
+".\Debug\timeslidewindow.obj"
+".\Debug\timetumblewindow.obj"
+".\Debug\core.obj"
+".\Debug\stream.obj"
+".\Debug\api.obj"
+".\Debug\lex.sql.obj"
+".\Debug\local_api.obj"
+".\Debug\opt.obj"
+".\Debug\plan.obj"
+".\Debug\sql.tab.obj"
+".\Debug\sql_dump.obj"
+".\Debug\sql_help.obj"
+".\Debug\sql_resolve.obj"
+".\Debug\pool.obj"
+".\Debug\equijoin.obj"
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1D5.tmp"
+<h3>Output Window</h3>
+Compiling...
+equijoin.c
+Creating library...
+
+
+
+<h3>Results</h3>
+libargus.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

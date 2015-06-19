@@ -1,0 +1,584 @@
+static void gen_arg (arg_t arg)
+{
+	switch (arg.flag)
+	{
+	case ARG_CONST: GEN("%d", arg.offset);
+			break;
+	case ARG_STACK: GEN("[ebp+%d]", 
+			offset[arg.temp]+arg.offset);
+			break;
+	case ARG_GLOBAL: GEN("[gl#%d]", arg.temp);
+			break;
+	case ARG_GADDR: GEN("gl#%d", arg.temp);
+			break;
+	case ARG_SYMBOL: GEN("%d", arg.offset);
+			break;
+	default:
+			printf("%d\n", arg.flag); 
+			assert(0);
+	}
+}
+
+static void genNOP ()
+{
+}
+
+static void genADD ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tadd eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genANS ()
+{
+	int i;
+	GEN("\tmov ebx, ebp\n");
+	for (i = 0; i < ip->arg[1].offset; i++)
+	{
+		GEN("\tmov ebx, [ebx + 8]\n");
+	}
+	GEN("\tadd ebx, %d\n", ip->arg[2].offset);
+	GEN("\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", ebx\n");
+}
+
+static void genSUB ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tsub eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genMUL ()
+{
+	GEN("\tmov ebx, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tmul ebx");
+/* insert check overflow */
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genDIV ()
+{
+	GEN("\tmov ebx, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\txor edx, edx\n\tdiv ebx");
+/* insert check overflow */
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genMOD ()
+{
+	GEN("\tmov ebx, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\txor edx, edx\n\tdiv ebx");
+/* insert check overflow */
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", edx\n");
+}
+
+static void genNEG ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tneg eax\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genFADD ()
+{
+}
+
+static void genFSUB ()
+{
+}
+
+static void genFMUL ()
+{
+}
+
+static void genFDIV ()
+{
+}
+
+static void genGLOBAL ()
+{
+}
+
+static void genCIF ()
+{
+}
+
+static void genCFI ()
+{
+}
+
+static void genNOT ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tnot eax\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genAND ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tand eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genOR ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tor eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genCTEMP ()
+{
+}
+
+static void genSHL ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tmov ecx, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tshl eax, ecx\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genSHR ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tmov ecx, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tshr eax, ecx\n\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");
+}
+
+static void genJMP ()
+{
+	GEN("\tjmp ll#%d\n", ip->arg[0].offset);
+}
+
+static void genJGT ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tcmp eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tjg ll#%d\n", ip->arg[0].offset);
+}
+
+static void genJLT ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tcmp eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tjl ll#%d\n", ip->arg[0].offset);
+}
+
+static void genJEQ ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tcmp eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tjz ll#%d\n", ip->arg[0].offset);
+}
+
+static void genJNE ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tcmp eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tjnz ll#%d\n", ip->arg[0].offset);
+}
+
+static void genJGE ()
+{
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tcmp eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tjge ll#%d\n", ip->arg[0].offset);
+
+}
+
+static void genJLE ()
+{	
+	GEN("\tmov eax, ");
+	gen_arg(ip->arg[1]);
+	GEN("\n\tcmp eax, ");
+	gen_arg(ip->arg[2]);
+	GEN("\n\tjle ll#%d\n", ip->arg[0].offset);
+}
+
+static void genPARAM ()
+{
+		int i;
+		GEN(";GEN PARAM\n");
+		if (ip->arg[1].offset <= 4)
+		{
+			if (ip->arg[0].flag == ARG_CONST)
+			{
+				GEN("\tpush dword %d\n", ip->arg[0].offset);
+			}
+			else if (ip->arg[0].flag == ARG_STACK)
+			{
+				GEN("\tpush dword [ebp+%d]\n", 
+					offset[ip->arg[0].temp] + ip->arg[0].offset);
+			}
+			else if (ip->arg[0].flag == ARG_GADDR)
+			{
+				GEN("\tpush dword gl#%d + %d\n",
+					ip->arg[0].temp, ip->arg[0].offset);
+			}
+			i = stack_pop(param_count);
+			i += 4;
+			stack_push(param_count, i);
+		}
+		else
+		{
+			int i = new_label();
+			assert(ip->arg[1].offset %4 == 0);
+			assert(ip->arg[0].flag == ARG_STACK);
+			GEN("\tmov edi, ebp\n");
+			GEN("\tadd edi, %d\n", offset[ip->arg[0].temp] + ip->arg[0].offset);
+			GEN("\tmov esi, edi\n");
+			GEN("\tadd esi, %d\n", ip->arg[1].offset);
+			GEN("ml#%d:\n", i);
+			GEN("\tsub esi, 4\n");
+			GEN("\tpush dword [esi]\n");
+			GEN("\tcmp esi, edi\n");
+			GEN("\tja ml#%d\n", i);
+			i = stack_pop(param_count);
+			i += ip->arg[1].offset;
+			stack_push(param_count, i);
+		}
+}
+
+static void genALLOC ()
+{
+	INFO("GENERATING ALLOC\n");
+	stack = ip->arg[0].offset;
+}
+
+static void genCALL ()
+{
+	int i;
+	GEN("\tmov ebx, ebp\n");
+	for (i = 0; i < ip->arg[1].offset; i++)
+	{
+		GEN("\tmov ebx, [ebx + 8]\n");
+	}
+	GEN("\tpush ebx\n");
+	GEN("\t;invoke %s\n", ip->arg[0].offset);
+	if (ip->arg[2].offset == 0)
+	{
+		GEN("\tcall %s\n", ip->arg[0].offset);
+	}
+	else
+	{
+		GEN("\tcall pp#%d\n", ip->arg[2].offset);
+	}
+	i = stack_pop(param_count);
+	GEN("\tadd esp, %d\n", i + 4);
+	stack_push(param_count, 0);
+}
+
+static void genCCALL ()
+{
+	int i;
+	GEN("\t;invoke %s\n", ip->arg[0].offset);
+	if (ip->arg[2].offset == 0)
+	{
+		GEN("\tcall %s\n", ip->arg[0].offset);
+	}
+	else
+	{
+		GEN("\tcall pp#%d\n", ip->arg[2].offset);
+	}
+	i = stack_pop(param_count);
+	if (i > 0)
+		GEN("\tadd esp, %d\n", i);
+	stack_push(param_count, 0);
+}
+
+static void genRET ()
+{
+	switch (ip->arg[1].offset)
+	{
+	case 1: GEN("\tmov ah, [ebp + %d]\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset); break;
+	case 2: GEN("\tmov ax, [ebp + %d]\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset); break;
+	case 4: GEN("\tmov eax, [ebp + %d]\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset); break;
+	case 8: GEN("\tmov eax, [ebp + %d]\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset);
+		GEN("\tmov edx, [ebp + %d]\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset + 4); break;
+	default: assert(0);
+	}
+}
+
+static void genADDR ()
+{
+	int t;
+	GEN("\tmov eax, ");
+	if (ip->arg[1].flag == ARG_STACK)
+	{
+		GEN("ebp\n");
+		GEN("\tadd eax, %d\n", offset[ip->arg[1].temp] + ip->arg[1].offset);
+	}
+	if (ip->arg[1].flag == ARG_GLOBAL)
+	{
+		GEN("gl#%d\n", ip->arg[1].temp);
+		GEN("\tadd eax, %d\n", ip->arg[1].offset);
+	}
+	GEN("\tmov ");
+	gen_arg(ip->arg[0]);
+	GEN(", eax\n");	
+}
+
+static void genPEEK ()
+{
+	if (ip->arg[2].offset == 1)
+	{
+		GEN("\tmov ebx, ");
+		gen_arg(ip->arg[1]);
+		GEN("\n\tmov ah, [ebx]\n\tmov ");
+		gen_arg(ip->arg[0]);
+		GEN(", ah\n");
+	}
+	else if (ip->arg[2].offset == 2)
+	{
+		GEN("\tmov ebx, ");
+		gen_arg(ip->arg[1]);
+		GEN("\n\tmov eax, [ebx]\n\tmov ");
+		gen_arg(ip->arg[0]);
+		GEN(", eax\n");
+	}
+	else if (ip->arg[2].offset == 4)
+	{
+		GEN("\tmov ebx, ");
+		gen_arg(ip->arg[1]);
+		GEN("\n\tmov eax, [ebx]\n\tmov ");
+		gen_arg(ip->arg[0]);
+		GEN(", eax\n");
+	}
+	else
+	{
+			int i = new_label();
+			assert(ip->arg[2].offset %4 == 0);
+			assert(ip->arg[0].flag == ARG_STACK);
+			assert(ip->arg[1].flag == ARG_STACK);
+			GEN("\tmov esi, ebp\n");
+			GEN("\tadd esi, %d\n", ip->arg[1].offset);
+			GEN("\tmov esi, [esi]\n");
+			GEN("\tmov edi, ebp\n");
+			GEN("\tadd edi, %d\n", offset[ip->arg[0].temp]+ ip->arg[0].offset);
+/*			gen_arg(ip->arg[0]);*/
+			GEN("\n\tmov ecx, %d\n", ip->arg[2].offset);
+			GEN("ml#%d:\n", i);
+			GEN("\tmov eax, [esi]\n");
+			GEN("\tmov [edi], eax\n");
+			GEN("\tadd esi, 4\n");
+			GEN("\tadd edi, 4\n");
+			GEN("\tsub ecx, 4\n");
+			GEN("\tcmp ecx, 0\n");
+			GEN("\tja ml#%d\n", i);
+	}
+}
+
+static void genPOKE ()
+{
+	if (ip->arg[2].offset == 1)
+	{
+		GEN("\tmov ebx, ");
+		gen_arg(ip->arg[0]);
+		GEN("\n\tmov ah, ");
+		gen_arg(ip->arg[1]);
+		GEN("\n\tmov [ebx], ah\n");
+	}
+	else if (ip->arg[2].offset == 2)
+	{
+		GEN("\tmov ebx, ");
+		gen_arg(ip->arg[0]);
+		GEN("\n\tmov ax, ");
+		gen_arg(ip->arg[1]);
+		GEN("\n\tmov [ebx], ax\n");
+	}
+	else if (ip->arg[2].offset == 4)
+	{
+		GEN("\tmov ebx, ");
+		gen_arg(ip->arg[0]);
+		GEN("\n\tmov eax, ");
+		gen_arg(ip->arg[1]);
+		GEN("\n\tmov [ebx], eax\n");
+	}
+	else
+	{
+			int i = new_label();
+			assert(ip->arg[2].offset %4 == 0);
+			assert(ip->arg[0].flag == ARG_STACK);
+			assert(ip->arg[1].flag == ARG_STACK);
+			GEN("\tmov edi, ");
+			gen_arg(ip->arg[0]);
+			GEN("\n\tmov esi, ebp\n");
+			GEN("\tadd esi, %d\n", ip->arg[1].offset);
+			GEN("\tmov ecx, %d\n", ip->arg[2].offset);
+			GEN("ml#%d:\n", i);
+			GEN("\tmov eax, [esi]\n");
+			GEN("\tmov [edi], eax\n");
+			GEN("\tadd esi, 4\n");
+			GEN("\tadd edi, 4\n");
+			GEN("\tsub ecx, 4\n");
+			GEN("\tcmp ecx, 0\n");
+			GEN("\tja ml#%d\n", i);
+	}
+}
+
+static void genTEMP ()
+{
+	size[ip->arg[0].temp] = (ip->arg[1].offset + 3) & ~(int)3;
+	offset[ip->arg[0].temp] = alloc_temp(size[ip->arg[0].temp]);
+}
+
+static void genLABEL ()
+{
+	GEN("ll#%d:\n", ip->arg[0].offset);
+}
+
+static void genMOVE ()
+{
+	char *reg;
+	char *mod;
+	if (ip->arg[2].offset <= 4)
+	{
+		switch (ip->arg[2].offset)
+		{
+		case 1: reg = "ah"; mod = "byte"; break;
+		case 2: reg = "ax"; mod = "word"; break;
+		case 4: reg = "eax"; mod = "dword"; break;
+		default: assert(0);
+		}
+		if (ip->arg[1].flag == ARG_CONST)
+		{
+			GEN("\tmov ");
+			gen_arg(ip->arg[0]);
+			GEN(", %s %d\n", mod, ip->arg[1].offset);
+		}
+		else
+		{
+			GEN("\tmov %s,", reg);
+			gen_arg(ip->arg[1]);
+			GEN("\n\tmov ");
+			gen_arg(ip->arg[0]);
+			GEN(", %s\n", reg);
+		}
+	}
+	else
+	{
+			int i = new_label();
+			assert(ip->arg[2].offset %4 == 0);
+			assert(ip->arg[0].flag == ARG_STACK);
+			assert(ip->arg[1].flag == ARG_STACK);
+			GEN("\tmov edi, ebp\n");
+			GEN("\tadd edi, %d\n", ip->arg[0].offset);
+			GEN("\tmov esi, ebp\n");
+			GEN("\tadd esi, %d\n", ip->arg[1].offset);
+			GEN("\tmov ecx, %d\n", ip->arg[2].offset);
+			GEN("ml#%d:\n", i);
+			GEN("\tmov eax, [esi]\n");
+			GEN("\tmov [edi], eax\n");
+			GEN("\tadd esi, 4\n");
+			GEN("\tadd edi, 4\n");
+			GEN("\tsub ecx, 4\n");
+			GEN("\tcmp ecx, 0\n");
+			GEN("\tja ml#%d\n", i);
+	}
+}
+
+static void genTITLE ()
+{
+}
+
+static void genEND ()
+{
+}
+
+static void genPROC ()
+{
+	name = ip->arg[2].offset;
+	GEN(";proc %s\n", ip->arg[0].offset);
+	GEN("pp#%d:\n", ip->arg[2].offset);
+	GEN("\tpush ebp\n");
+	GEN("\tmov ebp, esp\n");
+	GEN("\tsub esp, pp#%d#res\n", ip->arg[2].offset);
+}
+
+static void genENDP ()
+{
+	GEN("\tadd esp, pp#%d#res\n", name);
+	GEN("\tpop ebp\n");
+	GEN("\tret\n");
+	GEN("pp#%d#res equ %d\n\n", name, (last_avail << 2) + stack);
+}
+
+static void genMRET ()
+{
+	switch (ip->arg[1].offset)
+	{
+	case 1: GEN("\tmov [ebp + %d], ah\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset); break;
+	case 2: GEN("\tmov [ebp + %d], ax\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset); break;
+	case 4: GEN("\tmov [ebp + %d], eax\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset); break;
+	case 8: GEN("\tmov [ebp + %d], eax\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset);
+		GEN("\tmov [ebp + %d], edx\n", offset[ip->arg[0].temp]
+					+ ip->arg[0].offset + 4); break;
+	default: assert(0);
+	}
+}

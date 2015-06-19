@@ -1,0 +1,20 @@
+	CONST	0xFF	;
+	STORE	1	;
+	CONST	0xF0	;
+	STORE	2	;
+	CONST	0x3F	;
+	STORE	3	;
+	CONST	5	;
+	ADDI	7	;
+	SUBI	3	;
+	ANDI	0xF0	;
+	ORI	0x3F	;
+	NOT		;
+	SHL		;
+	SHL		;
+	SHR		;
+	SHR		;
+	ADD	1	;
+	SHLC		;
+STOP:	JMP 	STOP	;
+	END.

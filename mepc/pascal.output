@@ -1,0 +1,4188 @@
+Terminals which are not used
+
+   K_FILE
+   K_IN
+   K_NEG
+   K_NIL
+   K_POS
+   K_SET
+   K_XOR
+   AT
+   REAL
+   LABEL
+
+
+State 154 conflicts: 1 reduce/reduce
+State 289 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 @1: /* empty */
+
+    2 @2: /* empty */
+
+    3 @3: /* empty */
+
+    4 program: K_PROGRAM IDENTIFIER @1 SCOLON @2 block @3 PERIOD
+
+    5 @4: /* empty */
+
+    6 block: list_declaration @4 compound_statement
+
+    7 list_declaration: list_declaration declaration
+    8                 | /* empty */
+
+    9 declaration: label_declaration_part
+   10            | constant_definition_part
+   11            | type_definition_part
+   12            | variable_declaration_part
+   13            | function_declaration
+   14            | error
+
+   15 label_declaration_part: K_LABEL list_label SCOLON
+
+   16 list_label: list_label COMMA label
+   17           | label
+
+   18 label: INTEGER
+   19      | IDENTIFIER
+
+   20 constant_definition_part: K_CONST list_constant_definition
+
+   21 list_constant_definition: list_constant_definition constant_definition
+   22                         | constant_definition
+
+   23 constant_definition: IDENTIFIER EQUALS constant SCOLON
+
+   24 constant: expression
+
+   25 type_definition_part: K_TYPE list_type_definition
+
+   26 list_type_definition: list_type_definition type_definition
+   27                     | type_definition
+
+   28 type_definition: IDENTIFIER EQUALS type SCOLON
+
+   29 type: type_def
+
+   30 type_def: IDENTIFIER
+   31         | scalar_type
+   32         | subrange
+   33         | structured_type
+   34         | K_PACKED structured_type
+   35         | CARET type
+
+   36 scalar_type: LPAREN list_identifier RPAREN
+
+   37 subrange: expression DOTDOT expression
+
+   38 structured_type: array_type
+   39                | record_type
+
+   40 array_type: K_ARRAY LBRACKET list_type RBRACKET K_OF type
+
+   41 list_type: list_type COMMA type
+   42          | type
+
+   43 @5: /* empty */
+
+   44 record_type: K_RECORD @5 field_list K_END
+
+   45 field_list: list_record_section scolon_or_none
+   46           | list_record_section SCOLON variant_part
+   47           | variant_part
+
+   48 list_record_section: list_record_section SCOLON record_section
+   49                    | record_section
+
+   50 record_section: list_identifier COLON type
+
+   51 @6: /* empty */
+
+   52 variant_part: K_CASE IDENTIFIER COLON type K_OF @6 list_variant
+
+   53 list_variant: list_variant variant
+   54             | variant
+
+   55 @7: /* empty */
+
+   56 @8: /* empty */
+
+   57 variant: list_expression COLON LPAREN @7 field_list @8 RPAREN SCOLON
+
+   58 @9: /* empty */
+
+   59 variable_declaration_part: K_VAR @9 list_variable_declaration
+
+   60 list_variable_declaration: list_variable_declaration variable_declaration
+   61                          | variable_declaration
+
+   62 variable_declaration: list_identifier COLON type SCOLON
+
+   63 @10: /* empty */
+
+   64 @11: /* empty */
+
+   65 function_declaration: function_heading @10 block @11 SCOLON
+   66                     | function_heading K_EXTERNEL SCOLON
+
+   67 function_property: K_CDECL SCOLON
+   68                  | K_PASCAL SCOLON
+   69                  | /* empty */
+
+   70 function_heading: K_PROCEDURE IDENTIFIER SCOLON function_property
+   71                 | K_PROCEDURE IDENTIFIER LPAREN list_parameter_group RPAREN SCOLON function_property
+   72                 | K_FUNCTION IDENTIFIER COLON type SCOLON function_property
+   73                 | K_FUNCTION IDENTIFIER LPAREN list_parameter_group RPAREN COLON type SCOLON function_property
+
+   74 list_parameter_group: list_parameter_group SCOLON parameter_group
+
+   75 @12: /* empty */
+
+   76 list_parameter_group: @12 parameter_group
+
+   77 parameter_group: list_identifier COLON type
+   78                | K_VAR list_identifier COLON type
+
+   79 variable: IDENTIFIER
+   80         | variable LBRACKET list_expression RBRACKET
+   81         | variable PERIOD IDENTIFIER
+
+   82 list_expression: list_expression COMMA expression
+   83                | expression
+
+   84 expression: sexpr
+   85           | sexpr relop sexpr
+
+   86 relop: EQUALS
+   87      | NE
+   88      | GT
+   89      | LT
+   90      | GE
+   91      | LE
+
+   92 sexpr: term
+   93      | sexpr PLUS term
+   94      | sexpr MINUS term
+   95      | sexpr K_OR term
+
+   96 term: factor
+   97     | term TIMES factor
+   98     | term DIVIDE factor
+   99     | term K_DIV factor
+  100     | term K_MOD factor
+  101     | term K_AND factor
+
+  102 factor: variable
+  103       | INTEGER
+  104       | STRING
+  105       | LPAREN expression RPAREN
+  106       | IDENTIFIER LPAREN list_expression RPAREN
+  107       | POS factor
+  108       | NEG factor
+  109       | K_NOT factor
+  110       | LBRACKET list_element RBRACKET
+  111       | K_TRUE
+  112       | K_FALSE
+
+  113 list_element: list_element COMMA element
+  114             | element
+
+  115 element: expression
+  116        | subrange
+
+  117 statement: unlabelled_statement
+
+  118 @13: /* empty */
+
+  119 statement: label @13 COLON unlabelled_statement
+  120          | error
+
+  121 unlabelled_statement: variable IS expression
+  122                     | K_READ LPAREN list_expression RPAREN
+  123                     | K_READLN
+  124                     | K_READLN LPAREN list_expression RPAREN
+  125                     | K_WRITE LPAREN list_expression RPAREN
+  126                     | K_WRITELN LPAREN list_expression RPAREN
+  127                     | IDENTIFIER LPAREN list_expression RPAREN
+  128                     | IDENTIFIER
+  129                     | K_GOTO label
+
+  130 @14: /* empty */
+
+  131 @15: /* empty */
+
+  132 unlabelled_statement: K_IF expression K_THEN @14 statement @15 else_part
+  133                     | K_CASE expression K_OF list_case_list_element K_END
+
+  134 @16: /* empty */
+
+  135 @17: /* empty */
+
+  136 unlabelled_statement: K_WHILE @16 expression @17 K_DO statement
+
+  137 @18: /* empty */
+
+  138 unlabelled_statement: K_REPEAT @18 list_statement K_UNTIL expression
+
+  139 @19: /* empty */
+
+  140 unlabelled_statement: K_FOR variable IS expression K_TO expression K_DO @19 statement
+
+  141 @20: /* empty */
+
+  142 unlabelled_statement: K_FOR variable IS expression K_DOWNTO expression K_DO @20 statement
+  143                     | K_WITH variable K_DO statement
+  144                     | compound_statement
+
+  145 @21: /* empty */
+
+  146 else_part: K_ELSE @21 statement
+  147          | /* empty */
+
+  148 @22: /* empty */
+
+  149 compound_statement: K_BEGIN @22 list_statement K_END
+
+  150 list_statement: /* empty */
+  151               | real_list_statement scolon_or_none
+
+  152 scolon_or_none: /* empty */
+  153               | SCOLON
+
+  154 real_list_statement: statement
+  155                    | real_list_statement SCOLON statement
+
+  156 list_case_list_element: list_case_list_element SCOLON case_list_element
+  157                       | case_list_element
+
+  158 case_list_element: list_expression COLON statement
+
+  159 list_identifier: list_identifier COMMA IDENTIFIER
+  160                | IDENTIFIER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256) 14 120
+K_AND (258) 101
+K_ARRAY (259) 40
+K_BEGIN (260) 149
+K_CASE (261) 52 133
+K_CDECL (262) 67
+K_CONST (263) 20
+K_DIV (264) 99
+K_DO (265) 136 140 142 143
+K_DOWNTO (266) 142
+K_ELSE (267) 146
+K_END (268) 44 133 149
+K_EXTERNEL (269) 66
+K_FALSE (270) 112
+K_FILE (271)
+K_FOR (272) 140 142
+K_FUNCTION (273) 72 73
+K_GOTO (274) 129
+K_IF (275) 132
+K_IN (276)
+K_NEG (277)
+K_NOT (278) 109
+K_OF (279) 40 52 133
+K_OR (280) 95
+K_LABEL (281) 15
+K_MOD (282) 100
+K_NIL (283)
+K_PASCAL (284) 68
+K_PACKED (285) 34
+K_POS (286)
+K_PROCEDURE (287) 70 71
+K_PROGRAM (288) 4
+K_RECORD (289) 44
+K_READ (290) 122
+K_READLN (291) 123 124
+K_REPEAT (292) 138
+K_SET (293)
+K_THEN (294) 132
+K_TO (295) 140
+K_TRUE (296) 111
+K_TYPE (297) 25
+K_UNTIL (298) 138
+K_VAR (299) 59 78
+K_WHILE (300) 136
+K_WITH (301) 143
+K_WRITE (302) 125
+K_WRITELN (303) 126
+K_XOR (304)
+AT (305)
+CARET (306) 35
+COLON (307) 50 52 57 62 72 73 77 78 119 158
+COMMA (308) 16 41 82 113 159
+DIVIDE (309) 98
+DOTDOT (310) 37
+EQUALS (311) 23 28 86
+GE (312) 90
+GT (313) 88
+IS (314) 121 140 142
+LBRACKET (315) 40 80 110
+LE (316) 91
+LPAREN (317) 36 57 71 73 105 106 122 124 125 126 127
+LT (318) 89
+MINUS (319) 94
+NE (320) 87
+PERIOD (321) 4 81
+PLUS (322) 93
+RBRACKET (323) 40 80 110
+RPAREN (324) 36 57 71 73 105 106 122 124 125 126 127
+SCOLON (325) 4 15 23 28 46 48 57 62 65 66 67 68 70 71 72 73 74 153
+    155 156
+TIMES (326) 97
+IDENTIFIER (327) 4 19 23 28 30 52 70 71 72 73 79 81 106 127 128 159
+    160
+INTEGER (328) 18 103
+REAL (329)
+STRING (330) 104
+POS (331) 107
+NEG (332) 108
+LABEL (333)
+
+
+Nonterminals, with rules where they appear
+
+$accept (79)
+    on left: 0
+program (80)
+    on left: 4, on right: 0
+@1 (81)
+    on left: 1, on right: 4
+@2 (82)
+    on left: 2, on right: 4
+@3 (83)
+    on left: 3, on right: 4
+block (84)
+    on left: 6, on right: 4 65
+@4 (85)
+    on left: 5, on right: 6
+list_declaration (86)
+    on left: 7 8, on right: 6 7
+declaration (87)
+    on left: 9 10 11 12 13 14, on right: 7
+label_declaration_part (88)
+    on left: 15, on right: 9
+list_label (89)
+    on left: 16 17, on right: 15 16
+label (90)
+    on left: 18 19, on right: 16 17 119 129
+constant_definition_part (91)
+    on left: 20, on right: 10
+list_constant_definition (92)
+    on left: 21 22, on right: 20 21
+constant_definition (93)
+    on left: 23, on right: 21 22
+constant (94)
+    on left: 24, on right: 23
+type_definition_part (95)
+    on left: 25, on right: 11
+list_type_definition (96)
+    on left: 26 27, on right: 25 26
+type_definition (97)
+    on left: 28, on right: 26 27
+type (98)
+    on left: 29, on right: 28 35 40 41 42 50 52 62 72 73 77 78
+type_def (99)
+    on left: 30 31 32 33 34 35, on right: 29
+scalar_type (100)
+    on left: 36, on right: 31
+subrange (101)
+    on left: 37, on right: 32 116
+structured_type (102)
+    on left: 38 39, on right: 33 34
+array_type (103)
+    on left: 40, on right: 38
+list_type (104)
+    on left: 41 42, on right: 40 41
+record_type (105)
+    on left: 44, on right: 39
+@5 (106)
+    on left: 43, on right: 44
+field_list (107)
+    on left: 45 46 47, on right: 44 57
+list_record_section (108)
+    on left: 48 49, on right: 45 46 48
+record_section (109)
+    on left: 50, on right: 48 49
+variant_part (110)
+    on left: 52, on right: 46 47
+@6 (111)
+    on left: 51, on right: 52
+list_variant (112)
+    on left: 53 54, on right: 52 53
+variant (113)
+    on left: 57, on right: 53 54
+@7 (114)
+    on left: 55, on right: 57
+@8 (115)
+    on left: 56, on right: 57
+variable_declaration_part (116)
+    on left: 59, on right: 12
+@9 (117)
+    on left: 58, on right: 59
+list_variable_declaration (118)
+    on left: 60 61, on right: 59 60
+variable_declaration (119)
+    on left: 62, on right: 60 61
+function_declaration (120)
+    on left: 65 66, on right: 13
+@10 (121)
+    on left: 63, on right: 65
+@11 (122)
+    on left: 64, on right: 65
+function_property (123)
+    on left: 67 68 69, on right: 70 71 72 73
+function_heading (124)
+    on left: 70 71 72 73, on right: 65 66
+list_parameter_group (125)
+    on left: 74 76, on right: 71 73 74
+@12 (126)
+    on left: 75, on right: 76
+parameter_group (127)
+    on left: 77 78, on right: 74 76
+variable (128)
+    on left: 79 80 81, on right: 80 81 102 121 140 142 143
+list_expression (129)
+    on left: 82 83, on right: 57 80 82 106 122 124 125 126 127 158
+expression (130)
+    on left: 84 85, on right: 24 37 82 83 105 115 121 132 133 136 138
+    140 142
+relop (131)
+    on left: 86 87 88 89 90 91, on right: 85
+sexpr (132)
+    on left: 92 93 94 95, on right: 84 85 93 94 95
+term (133)
+    on left: 96 97 98 99 100 101, on right: 92 93 94 95 97 98 99 100
+    101
+factor (134)
+    on left: 102 103 104 105 106 107 108 109 110 111 112,
+    on right: 96 97 98 99 100 101 107 108 109
+list_element (135)
+    on left: 113 114, on right: 110 113
+element (136)
+    on left: 115 116, on right: 113 114
+statement (137)
+    on left: 117 119 120, on right: 132 136 140 142 143 146 154 155
+    158
+@13 (138)
+    on left: 118, on right: 119
+unlabelled_statement (139)
+    on left: 121 122 123 124 125 126 127 128 129 132 133 136 138 140
+    142 143 144, on right: 117 119
+@14 (140)
+    on left: 130, on right: 132
+@15 (141)
+    on left: 131, on right: 132
+@16 (142)
+    on left: 134, on right: 136
+@17 (143)
+    on left: 135, on right: 136
+@18 (144)
+    on left: 137, on right: 138
+@19 (145)
+    on left: 139, on right: 140
+@20 (146)
+    on left: 141, on right: 142
+else_part (147)
+    on left: 146 147, on right: 132
+@21 (148)
+    on left: 145, on right: 146
+compound_statement (149)
+    on left: 149, on right: 6 144
+@22 (150)
+    on left: 148, on right: 149
+list_statement (151)
+    on left: 150 151, on right: 138 149
+scolon_or_none (152)
+    on left: 152 153, on right: 45 151
+real_list_statement (153)
+    on left: 154 155, on right: 151 155
+list_case_list_element (154)
+    on left: 156 157, on right: 133 156
+case_list_element (155)
+    on left: 158, on right: 156 157
+list_identifier (156)
+    on left: 159 160, on right: 36 50 62 77 78 159
+
+
+state 0
+
+    0 $accept: . program $end
+
+    K_PROGRAM  shift, and go to state 1
+
+    program  go to state 2
+
+
+state 1
+
+    4 program: K_PROGRAM . IDENTIFIER @1 SCOLON @2 block @3 PERIOD
+
+    IDENTIFIER  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+    4 program: K_PROGRAM IDENTIFIER . @1 SCOLON @2 block @3 PERIOD
+
+    $default  reduce using rule 1 (@1)
+
+    @1  go to state 5
+
+
+state 4
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 5
+
+    4 program: K_PROGRAM IDENTIFIER @1 . SCOLON @2 block @3 PERIOD
+
+    SCOLON  shift, and go to state 6
+
+
+state 6
+
+    4 program: K_PROGRAM IDENTIFIER @1 SCOLON . @2 block @3 PERIOD
+
+    $default  reduce using rule 2 (@2)
+
+    @2  go to state 7
+
+
+state 7
+
+    4 program: K_PROGRAM IDENTIFIER @1 SCOLON @2 . block @3 PERIOD
+
+    $default  reduce using rule 8 (list_declaration)
+
+    block             go to state 8
+    list_declaration  go to state 9
+
+
+state 8
+
+    4 program: K_PROGRAM IDENTIFIER @1 SCOLON @2 block . @3 PERIOD
+
+    $default  reduce using rule 3 (@3)
+
+    @3  go to state 10
+
+
+state 9
+
+    6 block: list_declaration . @4 compound_statement
+    7 list_declaration: list_declaration . declaration
+
+    error        shift, and go to state 11
+    K_CONST      shift, and go to state 12
+    K_FUNCTION   shift, and go to state 13
+    K_LABEL      shift, and go to state 14
+    K_PROCEDURE  shift, and go to state 15
+    K_TYPE       shift, and go to state 16
+    K_VAR        shift, and go to state 17
+
+    K_BEGIN  reduce using rule 5 (@4)
+
+    @4                         go to state 18
+    declaration                go to state 19
+    label_declaration_part     go to state 20
+    constant_definition_part   go to state 21
+    type_definition_part       go to state 22
+    variable_declaration_part  go to state 23
+    function_declaration       go to state 24
+    function_heading           go to state 25
+
+
+state 10
+
+    4 program: K_PROGRAM IDENTIFIER @1 SCOLON @2 block @3 . PERIOD
+
+    PERIOD  shift, and go to state 26
+
+
+state 11
+
+   14 declaration: error .
+
+    $default  reduce using rule 14 (declaration)
+
+
+state 12
+
+   20 constant_definition_part: K_CONST . list_constant_definition
+
+    IDENTIFIER  shift, and go to state 27
+
+    list_constant_definition  go to state 28
+    constant_definition       go to state 29
+
+
+state 13
+
+   72 function_heading: K_FUNCTION . IDENTIFIER COLON type SCOLON function_property
+   73                 | K_FUNCTION . IDENTIFIER LPAREN list_parameter_group RPAREN COLON type SCOLON function_property
+
+    IDENTIFIER  shift, and go to state 30
+
+
+state 14
+
+   15 label_declaration_part: K_LABEL . list_label SCOLON
+
+    IDENTIFIER  shift, and go to state 31
+    INTEGER     shift, and go to state 32
+
+    list_label  go to state 33
+    label       go to state 34
+
+
+state 15
+
+   70 function_heading: K_PROCEDURE . IDENTIFIER SCOLON function_property
+   71                 | K_PROCEDURE . IDENTIFIER LPAREN list_parameter_group RPAREN SCOLON function_property
+
+    IDENTIFIER  shift, and go to state 35
+
+
+state 16
+
+   25 type_definition_part: K_TYPE . list_type_definition
+
+    IDENTIFIER  shift, and go to state 36
+
+    list_type_definition  go to state 37
+    type_definition       go to state 38
+
+
+state 17
+
+   59 variable_declaration_part: K_VAR . @9 list_variable_declaration
+
+    $default  reduce using rule 58 (@9)
+
+    @9  go to state 39
+
+
+state 18
+
+    6 block: list_declaration @4 . compound_statement
+
+    K_BEGIN  shift, and go to state 40
+
+    compound_statement  go to state 41
+
+
+state 19
+
+    7 list_declaration: list_declaration declaration .
+
+    $default  reduce using rule 7 (list_declaration)
+
+
+state 20
+
+    9 declaration: label_declaration_part .
+
+    $default  reduce using rule 9 (declaration)
+
+
+state 21
+
+   10 declaration: constant_definition_part .
+
+    $default  reduce using rule 10 (declaration)
+
+
+state 22
+
+   11 declaration: type_definition_part .
+
+    $default  reduce using rule 11 (declaration)
+
+
+state 23
+
+   12 declaration: variable_declaration_part .
+
+    $default  reduce using rule 12 (declaration)
+
+
+state 24
+
+   13 declaration: function_declaration .
+
+    $default  reduce using rule 13 (declaration)
+
+
+state 25
+
+   65 function_declaration: function_heading . @10 block @11 SCOLON
+   66                     | function_heading . K_EXTERNEL SCOLON
+
+    K_EXTERNEL  shift, and go to state 42
+
+    $default  reduce using rule 63 (@10)
+
+    @10  go to state 43
+
+
+state 26
+
+    4 program: K_PROGRAM IDENTIFIER @1 SCOLON @2 block @3 PERIOD .
+
+    $default  reduce using rule 4 (program)
+
+
+state 27
+
+   23 constant_definition: IDENTIFIER . EQUALS constant SCOLON
+
+    EQUALS  shift, and go to state 44
+
+
+state 28
+
+   20 constant_definition_part: K_CONST list_constant_definition .
+   21 list_constant_definition: list_constant_definition . constant_definition
+
+    IDENTIFIER  shift, and go to state 27
+
+    $default  reduce using rule 20 (constant_definition_part)
+
+    constant_definition  go to state 45
+
+
+state 29
+
+   22 list_constant_definition: constant_definition .
+
+    $default  reduce using rule 22 (list_constant_definition)
+
+
+state 30
+
+   72 function_heading: K_FUNCTION IDENTIFIER . COLON type SCOLON function_property
+   73                 | K_FUNCTION IDENTIFIER . LPAREN list_parameter_group RPAREN COLON type SCOLON function_property
+
+    COLON   shift, and go to state 46
+    LPAREN  shift, and go to state 47
+
+
+state 31
+
+   19 label: IDENTIFIER .
+
+    $default  reduce using rule 19 (label)
+
+
+state 32
+
+   18 label: INTEGER .
+
+    $default  reduce using rule 18 (label)
+
+
+state 33
+
+   15 label_declaration_part: K_LABEL list_label . SCOLON
+   16 list_label: list_label . COMMA label
+
+    COMMA   shift, and go to state 48
+    SCOLON  shift, and go to state 49
+
+
+state 34
+
+   17 list_label: label .
+
+    $default  reduce using rule 17 (list_label)
+
+
+state 35
+
+   70 function_heading: K_PROCEDURE IDENTIFIER . SCOLON function_property
+   71                 | K_PROCEDURE IDENTIFIER . LPAREN list_parameter_group RPAREN SCOLON function_property
+
+    LPAREN  shift, and go to state 50
+    SCOLON  shift, and go to state 51
+
+
+state 36
+
+   28 type_definition: IDENTIFIER . EQUALS type SCOLON
+
+    EQUALS  shift, and go to state 52
+
+
+state 37
+
+   25 type_definition_part: K_TYPE list_type_definition .
+   26 list_type_definition: list_type_definition . type_definition
+
+    IDENTIFIER  shift, and go to state 36
+
+    $default  reduce using rule 25 (type_definition_part)
+
+    type_definition  go to state 53
+
+
+state 38
+
+   27 list_type_definition: type_definition .
+
+    $default  reduce using rule 27 (list_type_definition)
+
+
+state 39
+
+   59 variable_declaration_part: K_VAR @9 . list_variable_declaration
+
+    IDENTIFIER  shift, and go to state 54
+
+    list_variable_declaration  go to state 55
+    variable_declaration       go to state 56
+    list_identifier            go to state 57
+
+
+state 40
+
+  149 compound_statement: K_BEGIN . @22 list_statement K_END
+
+    $default  reduce using rule 148 (@22)
+
+    @22  go to state 58
+
+
+state 41
+
+    6 block: list_declaration @4 compound_statement .
+
+    $default  reduce using rule 6 (block)
+
+
+state 42
+
+   66 function_declaration: function_heading K_EXTERNEL . SCOLON
+
+    SCOLON  shift, and go to state 59
+
+
+state 43
+
+   65 function_declaration: function_heading @10 . block @11 SCOLON
+
+    $default  reduce using rule 8 (list_declaration)
+
+    block             go to state 60
+    list_declaration  go to state 9
+
+
+state 44
+
+   23 constant_definition: IDENTIFIER EQUALS . constant SCOLON
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    constant    go to state 71
+    variable    go to state 72
+    expression  go to state 73
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 45
+
+   21 list_constant_definition: list_constant_definition constant_definition .
+
+    $default  reduce using rule 21 (list_constant_definition)
+
+
+state 46
+
+   72 function_heading: K_FUNCTION IDENTIFIER COLON . type SCOLON function_property
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 83
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 47
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN . list_parameter_group RPAREN COLON type SCOLON function_property
+
+    $default  reduce using rule 75 (@12)
+
+    list_parameter_group  go to state 91
+    @12                   go to state 92
+
+
+state 48
+
+   16 list_label: list_label COMMA . label
+
+    IDENTIFIER  shift, and go to state 31
+    INTEGER     shift, and go to state 32
+
+    label  go to state 93
+
+
+state 49
+
+   15 label_declaration_part: K_LABEL list_label SCOLON .
+
+    $default  reduce using rule 15 (label_declaration_part)
+
+
+state 50
+
+   71 function_heading: K_PROCEDURE IDENTIFIER LPAREN . list_parameter_group RPAREN SCOLON function_property
+
+    $default  reduce using rule 75 (@12)
+
+    list_parameter_group  go to state 94
+    @12                   go to state 92
+
+
+state 51
+
+   70 function_heading: K_PROCEDURE IDENTIFIER SCOLON . function_property
+
+    K_CDECL   shift, and go to state 95
+    K_PASCAL  shift, and go to state 96
+
+    $default  reduce using rule 69 (function_property)
+
+    function_property  go to state 97
+
+
+state 52
+
+   28 type_definition: IDENTIFIER EQUALS . type SCOLON
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 98
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 53
+
+   26 list_type_definition: list_type_definition type_definition .
+
+    $default  reduce using rule 26 (list_type_definition)
+
+
+state 54
+
+  160 list_identifier: IDENTIFIER .
+
+    $default  reduce using rule 160 (list_identifier)
+
+
+state 55
+
+   59 variable_declaration_part: K_VAR @9 list_variable_declaration .
+   60 list_variable_declaration: list_variable_declaration . variable_declaration
+
+    IDENTIFIER  shift, and go to state 54
+
+    $default  reduce using rule 59 (variable_declaration_part)
+
+    variable_declaration  go to state 99
+    list_identifier       go to state 57
+
+
+state 56
+
+   61 list_variable_declaration: variable_declaration .
+
+    $default  reduce using rule 61 (list_variable_declaration)
+
+
+state 57
+
+   62 variable_declaration: list_identifier . COLON type SCOLON
+  159 list_identifier: list_identifier . COMMA IDENTIFIER
+
+    COLON  shift, and go to state 100
+    COMMA  shift, and go to state 101
+
+
+state 58
+
+  149 compound_statement: K_BEGIN @22 . list_statement K_END
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    K_END  reduce using rule 150 (list_statement)
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 117
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+    list_statement        go to state 120
+    real_list_statement   go to state 121
+
+
+state 59
+
+   66 function_declaration: function_heading K_EXTERNEL SCOLON .
+
+    $default  reduce using rule 66 (function_declaration)
+
+
+state 60
+
+   65 function_declaration: function_heading @10 block . @11 SCOLON
+
+    $default  reduce using rule 64 (@11)
+
+    @11  go to state 122
+
+
+state 61
+
+  112 factor: K_FALSE .
+
+    $default  reduce using rule 112 (factor)
+
+
+state 62
+
+  109 factor: K_NOT . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 123
+
+
+state 63
+
+  111 factor: K_TRUE .
+
+    $default  reduce using rule 111 (factor)
+
+
+state 64
+
+  110 factor: LBRACKET . list_element RBRACKET
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    subrange      go to state 124
+    variable      go to state 72
+    expression    go to state 125
+    sexpr         go to state 74
+    term          go to state 75
+    factor        go to state 76
+    list_element  go to state 126
+    element       go to state 127
+
+
+state 65
+
+  105 factor: LPAREN . expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 128
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 66
+
+   79 variable: IDENTIFIER .
+  106 factor: IDENTIFIER . LPAREN list_expression RPAREN
+
+    LPAREN  shift, and go to state 129
+
+    $default  reduce using rule 79 (variable)
+
+
+state 67
+
+  103 factor: INTEGER .
+
+    $default  reduce using rule 103 (factor)
+
+
+state 68
+
+  104 factor: STRING .
+
+    $default  reduce using rule 104 (factor)
+
+
+state 69
+
+  107 factor: POS . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 130
+
+
+state 70
+
+  108 factor: NEG . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 131
+
+
+state 71
+
+   23 constant_definition: IDENTIFIER EQUALS constant . SCOLON
+
+    SCOLON  shift, and go to state 132
+
+
+state 72
+
+   80 variable: variable . LBRACKET list_expression RBRACKET
+   81         | variable . PERIOD IDENTIFIER
+  102 factor: variable .
+
+    LBRACKET  shift, and go to state 133
+    PERIOD    shift, and go to state 134
+
+    $default  reduce using rule 102 (factor)
+
+
+state 73
+
+   24 constant: expression .
+
+    $default  reduce using rule 24 (constant)
+
+
+state 74
+
+   84 expression: sexpr .
+   85           | sexpr . relop sexpr
+   93 sexpr: sexpr . PLUS term
+   94      | sexpr . MINUS term
+   95      | sexpr . K_OR term
+
+    K_OR    shift, and go to state 135
+    EQUALS  shift, and go to state 136
+    GE      shift, and go to state 137
+    GT      shift, and go to state 138
+    LE      shift, and go to state 139
+    LT      shift, and go to state 140
+    MINUS   shift, and go to state 141
+    NE      shift, and go to state 142
+    PLUS    shift, and go to state 143
+
+    $default  reduce using rule 84 (expression)
+
+    relop  go to state 144
+
+
+state 75
+
+   92 sexpr: term .
+   97 term: term . TIMES factor
+   98     | term . DIVIDE factor
+   99     | term . K_DIV factor
+  100     | term . K_MOD factor
+  101     | term . K_AND factor
+
+    K_AND   shift, and go to state 145
+    K_DIV   shift, and go to state 146
+    K_MOD   shift, and go to state 147
+    DIVIDE  shift, and go to state 148
+    TIMES   shift, and go to state 149
+
+    $default  reduce using rule 92 (sexpr)
+
+
+state 76
+
+   96 term: factor .
+
+    $default  reduce using rule 96 (term)
+
+
+state 77
+
+   40 array_type: K_ARRAY . LBRACKET list_type RBRACKET K_OF type
+
+    LBRACKET  shift, and go to state 150
+
+
+state 78
+
+   34 type_def: K_PACKED . structured_type
+
+    K_ARRAY   shift, and go to state 77
+    K_RECORD  shift, and go to state 79
+
+    structured_type  go to state 151
+    array_type       go to state 88
+    record_type      go to state 89
+
+
+state 79
+
+   44 record_type: K_RECORD . @5 field_list K_END
+
+    $default  reduce using rule 43 (@5)
+
+    @5  go to state 152
+
+
+state 80
+
+   35 type_def: CARET . type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 153
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 81
+
+   36 scalar_type: LPAREN . list_identifier RPAREN
+  105 factor: LPAREN . expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 154
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    expression       go to state 128
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+    list_identifier  go to state 155
+
+
+state 82
+
+   30 type_def: IDENTIFIER .
+   79 variable: IDENTIFIER .
+  106 factor: IDENTIFIER . LPAREN list_expression RPAREN
+
+    LPAREN  shift, and go to state 129
+
+    K_END     reduce using rule 30 (type_def)
+    K_OF      reduce using rule 30 (type_def)
+    COMMA     reduce using rule 30 (type_def)
+    RBRACKET  reduce using rule 30 (type_def)
+    RPAREN    reduce using rule 30 (type_def)
+    SCOLON    reduce using rule 30 (type_def)
+    $default  reduce using rule 79 (variable)
+
+
+state 83
+
+   72 function_heading: K_FUNCTION IDENTIFIER COLON type . SCOLON function_property
+
+    SCOLON  shift, and go to state 156
+
+
+state 84
+
+   29 type: type_def .
+
+    $default  reduce using rule 29 (type)
+
+
+state 85
+
+   31 type_def: scalar_type .
+
+    $default  reduce using rule 31 (type_def)
+
+
+state 86
+
+   32 type_def: subrange .
+
+    $default  reduce using rule 32 (type_def)
+
+
+state 87
+
+   33 type_def: structured_type .
+
+    $default  reduce using rule 33 (type_def)
+
+
+state 88
+
+   38 structured_type: array_type .
+
+    $default  reduce using rule 38 (structured_type)
+
+
+state 89
+
+   39 structured_type: record_type .
+
+    $default  reduce using rule 39 (structured_type)
+
+
+state 90
+
+   37 subrange: expression . DOTDOT expression
+
+    DOTDOT  shift, and go to state 157
+
+
+state 91
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN list_parameter_group . RPAREN COLON type SCOLON function_property
+   74 list_parameter_group: list_parameter_group . SCOLON parameter_group
+
+    RPAREN  shift, and go to state 158
+    SCOLON  shift, and go to state 159
+
+
+state 92
+
+   76 list_parameter_group: @12 . parameter_group
+
+    K_VAR       shift, and go to state 160
+    IDENTIFIER  shift, and go to state 54
+
+    parameter_group  go to state 161
+    list_identifier  go to state 162
+
+
+state 93
+
+   16 list_label: list_label COMMA label .
+
+    $default  reduce using rule 16 (list_label)
+
+
+state 94
+
+   71 function_heading: K_PROCEDURE IDENTIFIER LPAREN list_parameter_group . RPAREN SCOLON function_property
+   74 list_parameter_group: list_parameter_group . SCOLON parameter_group
+
+    RPAREN  shift, and go to state 163
+    SCOLON  shift, and go to state 159
+
+
+state 95
+
+   67 function_property: K_CDECL . SCOLON
+
+    SCOLON  shift, and go to state 164
+
+
+state 96
+
+   68 function_property: K_PASCAL . SCOLON
+
+    SCOLON  shift, and go to state 165
+
+
+state 97
+
+   70 function_heading: K_PROCEDURE IDENTIFIER SCOLON function_property .
+
+    $default  reduce using rule 70 (function_heading)
+
+
+state 98
+
+   28 type_definition: IDENTIFIER EQUALS type . SCOLON
+
+    SCOLON  shift, and go to state 166
+
+
+state 99
+
+   60 list_variable_declaration: list_variable_declaration variable_declaration .
+
+    $default  reduce using rule 60 (list_variable_declaration)
+
+
+state 100
+
+   62 variable_declaration: list_identifier COLON . type SCOLON
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 167
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 101
+
+  159 list_identifier: list_identifier COMMA . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 168
+
+
+state 102
+
+  120 statement: error .
+
+    $default  reduce using rule 120 (statement)
+
+
+state 103
+
+  133 unlabelled_statement: K_CASE . expression K_OF list_case_list_element K_END
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 169
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 104
+
+  140 unlabelled_statement: K_FOR . variable IS expression K_TO expression K_DO @19 statement
+  142                     | K_FOR . variable IS expression K_DOWNTO expression K_DO @20 statement
+
+    IDENTIFIER  shift, and go to state 170
+
+    variable  go to state 171
+
+
+state 105
+
+  129 unlabelled_statement: K_GOTO . label
+
+    IDENTIFIER  shift, and go to state 31
+    INTEGER     shift, and go to state 32
+
+    label  go to state 172
+
+
+state 106
+
+  132 unlabelled_statement: K_IF . expression K_THEN @14 statement @15 else_part
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 173
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 107
+
+  122 unlabelled_statement: K_READ . LPAREN list_expression RPAREN
+
+    LPAREN  shift, and go to state 174
+
+
+state 108
+
+  123 unlabelled_statement: K_READLN .
+  124                     | K_READLN . LPAREN list_expression RPAREN
+
+    LPAREN  shift, and go to state 175
+
+    $default  reduce using rule 123 (unlabelled_statement)
+
+
+state 109
+
+  138 unlabelled_statement: K_REPEAT . @18 list_statement K_UNTIL expression
+
+    $default  reduce using rule 137 (@18)
+
+    @18  go to state 176
+
+
+state 110
+
+  136 unlabelled_statement: K_WHILE . @16 expression @17 K_DO statement
+
+    $default  reduce using rule 134 (@16)
+
+    @16  go to state 177
+
+
+state 111
+
+  143 unlabelled_statement: K_WITH . variable K_DO statement
+
+    IDENTIFIER  shift, and go to state 170
+
+    variable  go to state 178
+
+
+state 112
+
+  125 unlabelled_statement: K_WRITE . LPAREN list_expression RPAREN
+
+    LPAREN  shift, and go to state 179
+
+
+state 113
+
+  126 unlabelled_statement: K_WRITELN . LPAREN list_expression RPAREN
+
+    LPAREN  shift, and go to state 180
+
+
+state 114
+
+   19 label: IDENTIFIER .
+   79 variable: IDENTIFIER .
+  127 unlabelled_statement: IDENTIFIER . LPAREN list_expression RPAREN
+  128                     | IDENTIFIER .
+
+    LPAREN  shift, and go to state 181
+
+    COLON     reduce using rule 19 (label)
+    IS        reduce using rule 79 (variable)
+    LBRACKET  reduce using rule 79 (variable)
+    PERIOD    reduce using rule 79 (variable)
+    $default  reduce using rule 128 (unlabelled_statement)
+
+
+state 115
+
+  119 statement: label . @13 COLON unlabelled_statement
+
+    $default  reduce using rule 118 (@13)
+
+    @13  go to state 182
+
+
+state 116
+
+   80 variable: variable . LBRACKET list_expression RBRACKET
+   81         | variable . PERIOD IDENTIFIER
+  121 unlabelled_statement: variable . IS expression
+
+    IS        shift, and go to state 183
+    LBRACKET  shift, and go to state 133
+    PERIOD    shift, and go to state 134
+
+
+state 117
+
+  154 real_list_statement: statement .
+
+    $default  reduce using rule 154 (real_list_statement)
+
+
+state 118
+
+  117 statement: unlabelled_statement .
+
+    $default  reduce using rule 117 (statement)
+
+
+state 119
+
+  144 unlabelled_statement: compound_statement .
+
+    $default  reduce using rule 144 (unlabelled_statement)
+
+
+state 120
+
+  149 compound_statement: K_BEGIN @22 list_statement . K_END
+
+    K_END  shift, and go to state 184
+
+
+state 121
+
+  151 list_statement: real_list_statement . scolon_or_none
+  155 real_list_statement: real_list_statement . SCOLON statement
+
+    SCOLON  shift, and go to state 185
+
+    $default  reduce using rule 152 (scolon_or_none)
+
+    scolon_or_none  go to state 186
+
+
+state 122
+
+   65 function_declaration: function_heading @10 block @11 . SCOLON
+
+    SCOLON  shift, and go to state 187
+
+
+state 123
+
+  109 factor: K_NOT factor .
+
+    $default  reduce using rule 109 (factor)
+
+
+state 124
+
+  116 element: subrange .
+
+    $default  reduce using rule 116 (element)
+
+
+state 125
+
+   37 subrange: expression . DOTDOT expression
+  115 element: expression .
+
+    DOTDOT  shift, and go to state 157
+
+    $default  reduce using rule 115 (element)
+
+
+state 126
+
+  110 factor: LBRACKET list_element . RBRACKET
+  113 list_element: list_element . COMMA element
+
+    COMMA     shift, and go to state 188
+    RBRACKET  shift, and go to state 189
+
+
+state 127
+
+  114 list_element: element .
+
+    $default  reduce using rule 114 (list_element)
+
+
+state 128
+
+  105 factor: LPAREN expression . RPAREN
+
+    RPAREN  shift, and go to state 190
+
+
+state 129
+
+  106 factor: IDENTIFIER LPAREN . list_expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 191
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 130
+
+  107 factor: POS factor .
+
+    $default  reduce using rule 107 (factor)
+
+
+state 131
+
+  108 factor: NEG factor .
+
+    $default  reduce using rule 108 (factor)
+
+
+state 132
+
+   23 constant_definition: IDENTIFIER EQUALS constant SCOLON .
+
+    $default  reduce using rule 23 (constant_definition)
+
+
+state 133
+
+   80 variable: variable LBRACKET . list_expression RBRACKET
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 193
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 134
+
+   81 variable: variable PERIOD . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 194
+
+
+state 135
+
+   95 sexpr: sexpr K_OR . term
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    term      go to state 195
+    factor    go to state 76
+
+
+state 136
+
+   86 relop: EQUALS .
+
+    $default  reduce using rule 86 (relop)
+
+
+state 137
+
+   90 relop: GE .
+
+    $default  reduce using rule 90 (relop)
+
+
+state 138
+
+   88 relop: GT .
+
+    $default  reduce using rule 88 (relop)
+
+
+state 139
+
+   91 relop: LE .
+
+    $default  reduce using rule 91 (relop)
+
+
+state 140
+
+   89 relop: LT .
+
+    $default  reduce using rule 89 (relop)
+
+
+state 141
+
+   94 sexpr: sexpr MINUS . term
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    term      go to state 196
+    factor    go to state 76
+
+
+state 142
+
+   87 relop: NE .
+
+    $default  reduce using rule 87 (relop)
+
+
+state 143
+
+   93 sexpr: sexpr PLUS . term
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    term      go to state 197
+    factor    go to state 76
+
+
+state 144
+
+   85 expression: sexpr relop . sexpr
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    sexpr     go to state 198
+    term      go to state 75
+    factor    go to state 76
+
+
+state 145
+
+  101 term: term K_AND . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 199
+
+
+state 146
+
+   99 term: term K_DIV . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 200
+
+
+state 147
+
+  100 term: term K_MOD . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 201
+
+
+state 148
+
+   98 term: term DIVIDE . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 202
+
+
+state 149
+
+   97 term: term TIMES . factor
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable  go to state 72
+    factor    go to state 203
+
+
+state 150
+
+   40 array_type: K_ARRAY LBRACKET . list_type RBRACKET K_OF type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 204
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    list_type        go to state 205
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 151
+
+   34 type_def: K_PACKED structured_type .
+
+    $default  reduce using rule 34 (type_def)
+
+
+state 152
+
+   44 record_type: K_RECORD @5 . field_list K_END
+
+    K_CASE      shift, and go to state 206
+    IDENTIFIER  shift, and go to state 54
+
+    field_list           go to state 207
+    list_record_section  go to state 208
+    record_section       go to state 209
+    variant_part         go to state 210
+    list_identifier      go to state 211
+
+
+state 153
+
+   35 type_def: CARET type .
+
+    $default  reduce using rule 35 (type_def)
+
+
+state 154
+
+   79 variable: IDENTIFIER .
+  106 factor: IDENTIFIER . LPAREN list_expression RPAREN
+  160 list_identifier: IDENTIFIER .
+
+    LPAREN  shift, and go to state 129
+
+    COMMA     reduce using rule 160 (list_identifier)
+    RPAREN    reduce using rule 79 (variable)
+    RPAREN    [reduce using rule 160 (list_identifier)]
+    $default  reduce using rule 79 (variable)
+
+
+state 155
+
+   36 scalar_type: LPAREN list_identifier . RPAREN
+  159 list_identifier: list_identifier . COMMA IDENTIFIER
+
+    COMMA   shift, and go to state 101
+    RPAREN  shift, and go to state 212
+
+
+state 156
+
+   72 function_heading: K_FUNCTION IDENTIFIER COLON type SCOLON . function_property
+
+    K_CDECL   shift, and go to state 95
+    K_PASCAL  shift, and go to state 96
+
+    $default  reduce using rule 69 (function_property)
+
+    function_property  go to state 213
+
+
+state 157
+
+   37 subrange: expression DOTDOT . expression
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 214
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 158
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN list_parameter_group RPAREN . COLON type SCOLON function_property
+
+    COLON  shift, and go to state 215
+
+
+state 159
+
+   74 list_parameter_group: list_parameter_group SCOLON . parameter_group
+
+    K_VAR       shift, and go to state 160
+    IDENTIFIER  shift, and go to state 54
+
+    parameter_group  go to state 216
+    list_identifier  go to state 162
+
+
+state 160
+
+   78 parameter_group: K_VAR . list_identifier COLON type
+
+    IDENTIFIER  shift, and go to state 54
+
+    list_identifier  go to state 217
+
+
+state 161
+
+   76 list_parameter_group: @12 parameter_group .
+
+    $default  reduce using rule 76 (list_parameter_group)
+
+
+state 162
+
+   77 parameter_group: list_identifier . COLON type
+  159 list_identifier: list_identifier . COMMA IDENTIFIER
+
+    COLON  shift, and go to state 218
+    COMMA  shift, and go to state 101
+
+
+state 163
+
+   71 function_heading: K_PROCEDURE IDENTIFIER LPAREN list_parameter_group RPAREN . SCOLON function_property
+
+    SCOLON  shift, and go to state 219
+
+
+state 164
+
+   67 function_property: K_CDECL SCOLON .
+
+    $default  reduce using rule 67 (function_property)
+
+
+state 165
+
+   68 function_property: K_PASCAL SCOLON .
+
+    $default  reduce using rule 68 (function_property)
+
+
+state 166
+
+   28 type_definition: IDENTIFIER EQUALS type SCOLON .
+
+    $default  reduce using rule 28 (type_definition)
+
+
+state 167
+
+   62 variable_declaration: list_identifier COLON type . SCOLON
+
+    SCOLON  shift, and go to state 220
+
+
+state 168
+
+  159 list_identifier: list_identifier COMMA IDENTIFIER .
+
+    $default  reduce using rule 159 (list_identifier)
+
+
+state 169
+
+  133 unlabelled_statement: K_CASE expression . K_OF list_case_list_element K_END
+
+    K_OF  shift, and go to state 221
+
+
+state 170
+
+   79 variable: IDENTIFIER .
+
+    $default  reduce using rule 79 (variable)
+
+
+state 171
+
+   80 variable: variable . LBRACKET list_expression RBRACKET
+   81         | variable . PERIOD IDENTIFIER
+  140 unlabelled_statement: K_FOR variable . IS expression K_TO expression K_DO @19 statement
+  142                     | K_FOR variable . IS expression K_DOWNTO expression K_DO @20 statement
+
+    IS        shift, and go to state 222
+    LBRACKET  shift, and go to state 133
+    PERIOD    shift, and go to state 134
+
+
+state 172
+
+  129 unlabelled_statement: K_GOTO label .
+
+    $default  reduce using rule 129 (unlabelled_statement)
+
+
+state 173
+
+  132 unlabelled_statement: K_IF expression . K_THEN @14 statement @15 else_part
+
+    K_THEN  shift, and go to state 223
+
+
+state 174
+
+  122 unlabelled_statement: K_READ LPAREN . list_expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 224
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 175
+
+  124 unlabelled_statement: K_READLN LPAREN . list_expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 225
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 176
+
+  138 unlabelled_statement: K_REPEAT @18 . list_statement K_UNTIL expression
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    K_UNTIL  reduce using rule 150 (list_statement)
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 117
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+    list_statement        go to state 226
+    real_list_statement   go to state 121
+
+
+state 177
+
+  136 unlabelled_statement: K_WHILE @16 . expression @17 K_DO statement
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 227
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 178
+
+   80 variable: variable . LBRACKET list_expression RBRACKET
+   81         | variable . PERIOD IDENTIFIER
+  143 unlabelled_statement: K_WITH variable . K_DO statement
+
+    K_DO      shift, and go to state 228
+    LBRACKET  shift, and go to state 133
+    PERIOD    shift, and go to state 134
+
+
+state 179
+
+  125 unlabelled_statement: K_WRITE LPAREN . list_expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 229
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 180
+
+  126 unlabelled_statement: K_WRITELN LPAREN . list_expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 230
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 181
+
+  127 unlabelled_statement: IDENTIFIER LPAREN . list_expression RPAREN
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable         go to state 72
+    list_expression  go to state 231
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 182
+
+  119 statement: label @13 . COLON unlabelled_statement
+
+    COLON  shift, and go to state 232
+
+
+state 183
+
+  121 unlabelled_statement: variable IS . expression
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 233
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 184
+
+  149 compound_statement: K_BEGIN @22 list_statement K_END .
+
+    $default  reduce using rule 149 (compound_statement)
+
+
+state 185
+
+  153 scolon_or_none: SCOLON .
+  155 real_list_statement: real_list_statement SCOLON . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    K_END    reduce using rule 153 (scolon_or_none)
+    K_UNTIL  reduce using rule 153 (scolon_or_none)
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 234
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 186
+
+  151 list_statement: real_list_statement scolon_or_none .
+
+    $default  reduce using rule 151 (list_statement)
+
+
+state 187
+
+   65 function_declaration: function_heading @10 block @11 SCOLON .
+
+    $default  reduce using rule 65 (function_declaration)
+
+
+state 188
+
+  113 list_element: list_element COMMA . element
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    subrange    go to state 124
+    variable    go to state 72
+    expression  go to state 125
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+    element     go to state 235
+
+
+state 189
+
+  110 factor: LBRACKET list_element RBRACKET .
+
+    $default  reduce using rule 110 (factor)
+
+
+state 190
+
+  105 factor: LPAREN expression RPAREN .
+
+    $default  reduce using rule 105 (factor)
+
+
+state 191
+
+   82 list_expression: list_expression . COMMA expression
+  106 factor: IDENTIFIER LPAREN list_expression . RPAREN
+
+    COMMA   shift, and go to state 236
+    RPAREN  shift, and go to state 237
+
+
+state 192
+
+   83 list_expression: expression .
+
+    $default  reduce using rule 83 (list_expression)
+
+
+state 193
+
+   80 variable: variable LBRACKET list_expression . RBRACKET
+   82 list_expression: list_expression . COMMA expression
+
+    COMMA     shift, and go to state 236
+    RBRACKET  shift, and go to state 238
+
+
+state 194
+
+   81 variable: variable PERIOD IDENTIFIER .
+
+    $default  reduce using rule 81 (variable)
+
+
+state 195
+
+   95 sexpr: sexpr K_OR term .
+   97 term: term . TIMES factor
+   98     | term . DIVIDE factor
+   99     | term . K_DIV factor
+  100     | term . K_MOD factor
+  101     | term . K_AND factor
+
+    K_AND   shift, and go to state 145
+    K_DIV   shift, and go to state 146
+    K_MOD   shift, and go to state 147
+    DIVIDE  shift, and go to state 148
+    TIMES   shift, and go to state 149
+
+    $default  reduce using rule 95 (sexpr)
+
+
+state 196
+
+   94 sexpr: sexpr MINUS term .
+   97 term: term . TIMES factor
+   98     | term . DIVIDE factor
+   99     | term . K_DIV factor
+  100     | term . K_MOD factor
+  101     | term . K_AND factor
+
+    K_AND   shift, and go to state 145
+    K_DIV   shift, and go to state 146
+    K_MOD   shift, and go to state 147
+    DIVIDE  shift, and go to state 148
+    TIMES   shift, and go to state 149
+
+    $default  reduce using rule 94 (sexpr)
+
+
+state 197
+
+   93 sexpr: sexpr PLUS term .
+   97 term: term . TIMES factor
+   98     | term . DIVIDE factor
+   99     | term . K_DIV factor
+  100     | term . K_MOD factor
+  101     | term . K_AND factor
+
+    K_AND   shift, and go to state 145
+    K_DIV   shift, and go to state 146
+    K_MOD   shift, and go to state 147
+    DIVIDE  shift, and go to state 148
+    TIMES   shift, and go to state 149
+
+    $default  reduce using rule 93 (sexpr)
+
+
+state 198
+
+   85 expression: sexpr relop sexpr .
+   93 sexpr: sexpr . PLUS term
+   94      | sexpr . MINUS term
+   95      | sexpr . K_OR term
+
+    K_OR   shift, and go to state 135
+    MINUS  shift, and go to state 141
+    PLUS   shift, and go to state 143
+
+    $default  reduce using rule 85 (expression)
+
+
+state 199
+
+  101 term: term K_AND factor .
+
+    $default  reduce using rule 101 (term)
+
+
+state 200
+
+   99 term: term K_DIV factor .
+
+    $default  reduce using rule 99 (term)
+
+
+state 201
+
+  100 term: term K_MOD factor .
+
+    $default  reduce using rule 100 (term)
+
+
+state 202
+
+   98 term: term DIVIDE factor .
+
+    $default  reduce using rule 98 (term)
+
+
+state 203
+
+   97 term: term TIMES factor .
+
+    $default  reduce using rule 97 (term)
+
+
+state 204
+
+   42 list_type: type .
+
+    $default  reduce using rule 42 (list_type)
+
+
+state 205
+
+   40 array_type: K_ARRAY LBRACKET list_type . RBRACKET K_OF type
+   41 list_type: list_type . COMMA type
+
+    COMMA     shift, and go to state 239
+    RBRACKET  shift, and go to state 240
+
+
+state 206
+
+   52 variant_part: K_CASE . IDENTIFIER COLON type K_OF @6 list_variant
+
+    IDENTIFIER  shift, and go to state 241
+
+
+state 207
+
+   44 record_type: K_RECORD @5 field_list . K_END
+
+    K_END  shift, and go to state 242
+
+
+state 208
+
+   45 field_list: list_record_section . scolon_or_none
+   46           | list_record_section . SCOLON variant_part
+   48 list_record_section: list_record_section . SCOLON record_section
+
+    SCOLON  shift, and go to state 243
+
+    $default  reduce using rule 152 (scolon_or_none)
+
+    scolon_or_none  go to state 244
+
+
+state 209
+
+   49 list_record_section: record_section .
+
+    $default  reduce using rule 49 (list_record_section)
+
+
+state 210
+
+   47 field_list: variant_part .
+
+    $default  reduce using rule 47 (field_list)
+
+
+state 211
+
+   50 record_section: list_identifier . COLON type
+  159 list_identifier: list_identifier . COMMA IDENTIFIER
+
+    COLON  shift, and go to state 245
+    COMMA  shift, and go to state 101
+
+
+state 212
+
+   36 scalar_type: LPAREN list_identifier RPAREN .
+
+    $default  reduce using rule 36 (scalar_type)
+
+
+state 213
+
+   72 function_heading: K_FUNCTION IDENTIFIER COLON type SCOLON function_property .
+
+    $default  reduce using rule 72 (function_heading)
+
+
+state 214
+
+   37 subrange: expression DOTDOT expression .
+
+    $default  reduce using rule 37 (subrange)
+
+
+state 215
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN list_parameter_group RPAREN COLON . type SCOLON function_property
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 246
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 216
+
+   74 list_parameter_group: list_parameter_group SCOLON parameter_group .
+
+    $default  reduce using rule 74 (list_parameter_group)
+
+
+state 217
+
+   78 parameter_group: K_VAR list_identifier . COLON type
+  159 list_identifier: list_identifier . COMMA IDENTIFIER
+
+    COLON  shift, and go to state 247
+    COMMA  shift, and go to state 101
+
+
+state 218
+
+   77 parameter_group: list_identifier COLON . type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 248
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 219
+
+   71 function_heading: K_PROCEDURE IDENTIFIER LPAREN list_parameter_group RPAREN SCOLON . function_property
+
+    K_CDECL   shift, and go to state 95
+    K_PASCAL  shift, and go to state 96
+
+    $default  reduce using rule 69 (function_property)
+
+    function_property  go to state 249
+
+
+state 220
+
+   62 variable_declaration: list_identifier COLON type SCOLON .
+
+    $default  reduce using rule 62 (variable_declaration)
+
+
+state 221
+
+  133 unlabelled_statement: K_CASE expression K_OF . list_case_list_element K_END
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable                go to state 72
+    list_expression         go to state 250
+    expression              go to state 192
+    sexpr                   go to state 74
+    term                    go to state 75
+    factor                  go to state 76
+    list_case_list_element  go to state 251
+    case_list_element       go to state 252
+
+
+state 222
+
+  140 unlabelled_statement: K_FOR variable IS . expression K_TO expression K_DO @19 statement
+  142                     | K_FOR variable IS . expression K_DOWNTO expression K_DO @20 statement
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 253
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 223
+
+  132 unlabelled_statement: K_IF expression K_THEN . @14 statement @15 else_part
+
+    $default  reduce using rule 130 (@14)
+
+    @14  go to state 254
+
+
+state 224
+
+   82 list_expression: list_expression . COMMA expression
+  122 unlabelled_statement: K_READ LPAREN list_expression . RPAREN
+
+    COMMA   shift, and go to state 236
+    RPAREN  shift, and go to state 255
+
+
+state 225
+
+   82 list_expression: list_expression . COMMA expression
+  124 unlabelled_statement: K_READLN LPAREN list_expression . RPAREN
+
+    COMMA   shift, and go to state 236
+    RPAREN  shift, and go to state 256
+
+
+state 226
+
+  138 unlabelled_statement: K_REPEAT @18 list_statement . K_UNTIL expression
+
+    K_UNTIL  shift, and go to state 257
+
+
+state 227
+
+  136 unlabelled_statement: K_WHILE @16 expression . @17 K_DO statement
+
+    $default  reduce using rule 135 (@17)
+
+    @17  go to state 258
+
+
+state 228
+
+  143 unlabelled_statement: K_WITH variable K_DO . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 259
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 229
+
+   82 list_expression: list_expression . COMMA expression
+  125 unlabelled_statement: K_WRITE LPAREN list_expression . RPAREN
+
+    COMMA   shift, and go to state 236
+    RPAREN  shift, and go to state 260
+
+
+state 230
+
+   82 list_expression: list_expression . COMMA expression
+  126 unlabelled_statement: K_WRITELN LPAREN list_expression . RPAREN
+
+    COMMA   shift, and go to state 236
+    RPAREN  shift, and go to state 261
+
+
+state 231
+
+   82 list_expression: list_expression . COMMA expression
+  127 unlabelled_statement: IDENTIFIER LPAREN list_expression . RPAREN
+
+    COMMA   shift, and go to state 236
+    RPAREN  shift, and go to state 262
+
+
+state 232
+
+  119 statement: label @13 COLON . unlabelled_statement
+
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 263
+
+    variable              go to state 116
+    unlabelled_statement  go to state 264
+    compound_statement    go to state 119
+
+
+state 233
+
+  121 unlabelled_statement: variable IS expression .
+
+    $default  reduce using rule 121 (unlabelled_statement)
+
+
+state 234
+
+  155 real_list_statement: real_list_statement SCOLON statement .
+
+    $default  reduce using rule 155 (real_list_statement)
+
+
+state 235
+
+  113 list_element: list_element COMMA element .
+
+    $default  reduce using rule 113 (list_element)
+
+
+state 236
+
+   82 list_expression: list_expression COMMA . expression
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 265
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 237
+
+  106 factor: IDENTIFIER LPAREN list_expression RPAREN .
+
+    $default  reduce using rule 106 (factor)
+
+
+state 238
+
+   80 variable: variable LBRACKET list_expression RBRACKET .
+
+    $default  reduce using rule 80 (variable)
+
+
+state 239
+
+   41 list_type: list_type COMMA . type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 266
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 240
+
+   40 array_type: K_ARRAY LBRACKET list_type RBRACKET . K_OF type
+
+    K_OF  shift, and go to state 267
+
+
+state 241
+
+   52 variant_part: K_CASE IDENTIFIER . COLON type K_OF @6 list_variant
+
+    COLON  shift, and go to state 268
+
+
+state 242
+
+   44 record_type: K_RECORD @5 field_list K_END .
+
+    $default  reduce using rule 44 (record_type)
+
+
+state 243
+
+   46 field_list: list_record_section SCOLON . variant_part
+   48 list_record_section: list_record_section SCOLON . record_section
+  153 scolon_or_none: SCOLON .
+
+    K_CASE      shift, and go to state 206
+    IDENTIFIER  shift, and go to state 54
+
+    $default  reduce using rule 153 (scolon_or_none)
+
+    record_section   go to state 269
+    variant_part     go to state 270
+    list_identifier  go to state 211
+
+
+state 244
+
+   45 field_list: list_record_section scolon_or_none .
+
+    $default  reduce using rule 45 (field_list)
+
+
+state 245
+
+   50 record_section: list_identifier COLON . type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 271
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 246
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN list_parameter_group RPAREN COLON type . SCOLON function_property
+
+    SCOLON  shift, and go to state 272
+
+
+state 247
+
+   78 parameter_group: K_VAR list_identifier COLON . type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 273
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 248
+
+   77 parameter_group: list_identifier COLON type .
+
+    $default  reduce using rule 77 (parameter_group)
+
+
+state 249
+
+   71 function_heading: K_PROCEDURE IDENTIFIER LPAREN list_parameter_group RPAREN SCOLON function_property .
+
+    $default  reduce using rule 71 (function_heading)
+
+
+state 250
+
+   82 list_expression: list_expression . COMMA expression
+  158 case_list_element: list_expression . COLON statement
+
+    COLON  shift, and go to state 274
+    COMMA  shift, and go to state 236
+
+
+state 251
+
+  133 unlabelled_statement: K_CASE expression K_OF list_case_list_element . K_END
+  156 list_case_list_element: list_case_list_element . SCOLON case_list_element
+
+    K_END   shift, and go to state 275
+    SCOLON  shift, and go to state 276
+
+
+state 252
+
+  157 list_case_list_element: case_list_element .
+
+    $default  reduce using rule 157 (list_case_list_element)
+
+
+state 253
+
+  140 unlabelled_statement: K_FOR variable IS expression . K_TO expression K_DO @19 statement
+  142                     | K_FOR variable IS expression . K_DOWNTO expression K_DO @20 statement
+
+    K_DOWNTO  shift, and go to state 277
+    K_TO      shift, and go to state 278
+
+
+state 254
+
+  132 unlabelled_statement: K_IF expression K_THEN @14 . statement @15 else_part
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 279
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 255
+
+  122 unlabelled_statement: K_READ LPAREN list_expression RPAREN .
+
+    $default  reduce using rule 122 (unlabelled_statement)
+
+
+state 256
+
+  124 unlabelled_statement: K_READLN LPAREN list_expression RPAREN .
+
+    $default  reduce using rule 124 (unlabelled_statement)
+
+
+state 257
+
+  138 unlabelled_statement: K_REPEAT @18 list_statement K_UNTIL . expression
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 280
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 258
+
+  136 unlabelled_statement: K_WHILE @16 expression @17 . K_DO statement
+
+    K_DO  shift, and go to state 281
+
+
+state 259
+
+  143 unlabelled_statement: K_WITH variable K_DO statement .
+
+    $default  reduce using rule 143 (unlabelled_statement)
+
+
+state 260
+
+  125 unlabelled_statement: K_WRITE LPAREN list_expression RPAREN .
+
+    $default  reduce using rule 125 (unlabelled_statement)
+
+
+state 261
+
+  126 unlabelled_statement: K_WRITELN LPAREN list_expression RPAREN .
+
+    $default  reduce using rule 126 (unlabelled_statement)
+
+
+state 262
+
+  127 unlabelled_statement: IDENTIFIER LPAREN list_expression RPAREN .
+
+    $default  reduce using rule 127 (unlabelled_statement)
+
+
+state 263
+
+   79 variable: IDENTIFIER .
+  127 unlabelled_statement: IDENTIFIER . LPAREN list_expression RPAREN
+  128                     | IDENTIFIER .
+
+    LPAREN  shift, and go to state 181
+
+    IS        reduce using rule 79 (variable)
+    LBRACKET  reduce using rule 79 (variable)
+    PERIOD    reduce using rule 79 (variable)
+    $default  reduce using rule 128 (unlabelled_statement)
+
+
+state 264
+
+  119 statement: label @13 COLON unlabelled_statement .
+
+    $default  reduce using rule 119 (statement)
+
+
+state 265
+
+   82 list_expression: list_expression COMMA expression .
+
+    $default  reduce using rule 82 (list_expression)
+
+
+state 266
+
+   41 list_type: list_type COMMA type .
+
+    $default  reduce using rule 41 (list_type)
+
+
+state 267
+
+   40 array_type: K_ARRAY LBRACKET list_type RBRACKET K_OF . type
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 282
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 268
+
+   52 variant_part: K_CASE IDENTIFIER COLON . type K_OF @6 list_variant
+
+    K_ARRAY     shift, and go to state 77
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_PACKED    shift, and go to state 78
+    K_RECORD    shift, and go to state 79
+    K_TRUE      shift, and go to state 63
+    CARET       shift, and go to state 80
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 81
+    IDENTIFIER  shift, and go to state 82
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    type             go to state 283
+    type_def         go to state 84
+    scalar_type      go to state 85
+    subrange         go to state 86
+    structured_type  go to state 87
+    array_type       go to state 88
+    record_type      go to state 89
+    variable         go to state 72
+    expression       go to state 90
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 269
+
+   48 list_record_section: list_record_section SCOLON record_section .
+
+    $default  reduce using rule 48 (list_record_section)
+
+
+state 270
+
+   46 field_list: list_record_section SCOLON variant_part .
+
+    $default  reduce using rule 46 (field_list)
+
+
+state 271
+
+   50 record_section: list_identifier COLON type .
+
+    $default  reduce using rule 50 (record_section)
+
+
+state 272
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN list_parameter_group RPAREN COLON type SCOLON . function_property
+
+    K_CDECL   shift, and go to state 95
+    K_PASCAL  shift, and go to state 96
+
+    $default  reduce using rule 69 (function_property)
+
+    function_property  go to state 284
+
+
+state 273
+
+   78 parameter_group: K_VAR list_identifier COLON type .
+
+    $default  reduce using rule 78 (parameter_group)
+
+
+state 274
+
+  158 case_list_element: list_expression COLON . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 285
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 275
+
+  133 unlabelled_statement: K_CASE expression K_OF list_case_list_element K_END .
+
+    $default  reduce using rule 133 (unlabelled_statement)
+
+
+state 276
+
+  156 list_case_list_element: list_case_list_element SCOLON . case_list_element
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable           go to state 72
+    list_expression    go to state 250
+    expression         go to state 192
+    sexpr              go to state 74
+    term               go to state 75
+    factor             go to state 76
+    case_list_element  go to state 286
+
+
+state 277
+
+  142 unlabelled_statement: K_FOR variable IS expression K_DOWNTO . expression K_DO @20 statement
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 287
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 278
+
+  140 unlabelled_statement: K_FOR variable IS expression K_TO . expression K_DO @19 statement
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    variable    go to state 72
+    expression  go to state 288
+    sexpr       go to state 74
+    term        go to state 75
+    factor      go to state 76
+
+
+state 279
+
+  132 unlabelled_statement: K_IF expression K_THEN @14 statement . @15 else_part
+
+    $default  reduce using rule 131 (@15)
+
+    @15  go to state 289
+
+
+state 280
+
+  138 unlabelled_statement: K_REPEAT @18 list_statement K_UNTIL expression .
+
+    $default  reduce using rule 138 (unlabelled_statement)
+
+
+state 281
+
+  136 unlabelled_statement: K_WHILE @16 expression @17 K_DO . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 290
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 282
+
+   40 array_type: K_ARRAY LBRACKET list_type RBRACKET K_OF type .
+
+    $default  reduce using rule 40 (array_type)
+
+
+state 283
+
+   52 variant_part: K_CASE IDENTIFIER COLON type . K_OF @6 list_variant
+
+    K_OF  shift, and go to state 291
+
+
+state 284
+
+   73 function_heading: K_FUNCTION IDENTIFIER LPAREN list_parameter_group RPAREN COLON type SCOLON function_property .
+
+    $default  reduce using rule 73 (function_heading)
+
+
+state 285
+
+  158 case_list_element: list_expression COLON statement .
+
+    $default  reduce using rule 158 (case_list_element)
+
+
+state 286
+
+  156 list_case_list_element: list_case_list_element SCOLON case_list_element .
+
+    $default  reduce using rule 156 (list_case_list_element)
+
+
+state 287
+
+  142 unlabelled_statement: K_FOR variable IS expression K_DOWNTO expression . K_DO @20 statement
+
+    K_DO  shift, and go to state 292
+
+
+state 288
+
+  140 unlabelled_statement: K_FOR variable IS expression K_TO expression . K_DO @19 statement
+
+    K_DO  shift, and go to state 293
+
+
+state 289
+
+  132 unlabelled_statement: K_IF expression K_THEN @14 statement @15 . else_part
+
+    K_ELSE  shift, and go to state 294
+
+    K_ELSE    [reduce using rule 147 (else_part)]
+    $default  reduce using rule 147 (else_part)
+
+    else_part  go to state 295
+
+
+state 290
+
+  136 unlabelled_statement: K_WHILE @16 expression @17 K_DO statement .
+
+    $default  reduce using rule 136 (unlabelled_statement)
+
+
+state 291
+
+   52 variant_part: K_CASE IDENTIFIER COLON type K_OF . @6 list_variant
+
+    $default  reduce using rule 51 (@6)
+
+    @6  go to state 296
+
+
+state 292
+
+  142 unlabelled_statement: K_FOR variable IS expression K_DOWNTO expression K_DO . @20 statement
+
+    $default  reduce using rule 141 (@20)
+
+    @20  go to state 297
+
+
+state 293
+
+  140 unlabelled_statement: K_FOR variable IS expression K_TO expression K_DO . @19 statement
+
+    $default  reduce using rule 139 (@19)
+
+    @19  go to state 298
+
+
+state 294
+
+  146 else_part: K_ELSE . @21 statement
+
+    $default  reduce using rule 145 (@21)
+
+    @21  go to state 299
+
+
+state 295
+
+  132 unlabelled_statement: K_IF expression K_THEN @14 statement @15 else_part .
+
+    $default  reduce using rule 132 (unlabelled_statement)
+
+
+state 296
+
+   52 variant_part: K_CASE IDENTIFIER COLON type K_OF @6 . list_variant
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    list_variant     go to state 300
+    variant          go to state 301
+    variable         go to state 72
+    list_expression  go to state 302
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 297
+
+  142 unlabelled_statement: K_FOR variable IS expression K_DOWNTO expression K_DO @20 . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 303
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 298
+
+  140 unlabelled_statement: K_FOR variable IS expression K_TO expression K_DO @19 . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 304
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 299
+
+  146 else_part: K_ELSE @21 . statement
+
+    error       shift, and go to state 102
+    K_BEGIN     shift, and go to state 40
+    K_CASE      shift, and go to state 103
+    K_FOR       shift, and go to state 104
+    K_GOTO      shift, and go to state 105
+    K_IF        shift, and go to state 106
+    K_READ      shift, and go to state 107
+    K_READLN    shift, and go to state 108
+    K_REPEAT    shift, and go to state 109
+    K_WHILE     shift, and go to state 110
+    K_WITH      shift, and go to state 111
+    K_WRITE     shift, and go to state 112
+    K_WRITELN   shift, and go to state 113
+    IDENTIFIER  shift, and go to state 114
+    INTEGER     shift, and go to state 32
+
+    label                 go to state 115
+    variable              go to state 116
+    statement             go to state 305
+    unlabelled_statement  go to state 118
+    compound_statement    go to state 119
+
+
+state 300
+
+   52 variant_part: K_CASE IDENTIFIER COLON type K_OF @6 list_variant .
+   53 list_variant: list_variant . variant
+
+    K_FALSE     shift, and go to state 61
+    K_NOT       shift, and go to state 62
+    K_TRUE      shift, and go to state 63
+    LBRACKET    shift, and go to state 64
+    LPAREN      shift, and go to state 65
+    IDENTIFIER  shift, and go to state 66
+    INTEGER     shift, and go to state 67
+    STRING      shift, and go to state 68
+    POS         shift, and go to state 69
+    NEG         shift, and go to state 70
+
+    $default  reduce using rule 52 (variant_part)
+
+    variant          go to state 306
+    variable         go to state 72
+    list_expression  go to state 302
+    expression       go to state 192
+    sexpr            go to state 74
+    term             go to state 75
+    factor           go to state 76
+
+
+state 301
+
+   54 list_variant: variant .
+
+    $default  reduce using rule 54 (list_variant)
+
+
+state 302
+
+   57 variant: list_expression . COLON LPAREN @7 field_list @8 RPAREN SCOLON
+   82 list_expression: list_expression . COMMA expression
+
+    COLON  shift, and go to state 307
+    COMMA  shift, and go to state 236
+
+
+state 303
+
+  142 unlabelled_statement: K_FOR variable IS expression K_DOWNTO expression K_DO @20 statement .
+
+    $default  reduce using rule 142 (unlabelled_statement)
+
+
+state 304
+
+  140 unlabelled_statement: K_FOR variable IS expression K_TO expression K_DO @19 statement .
+
+    $default  reduce using rule 140 (unlabelled_statement)
+
+
+state 305
+
+  146 else_part: K_ELSE @21 statement .
+
+    $default  reduce using rule 146 (else_part)
+
+
+state 306
+
+   53 list_variant: list_variant variant .
+
+    $default  reduce using rule 53 (list_variant)
+
+
+state 307
+
+   57 variant: list_expression COLON . LPAREN @7 field_list @8 RPAREN SCOLON
+
+    LPAREN  shift, and go to state 308
+
+
+state 308
+
+   57 variant: list_expression COLON LPAREN . @7 field_list @8 RPAREN SCOLON
+
+    $default  reduce using rule 55 (@7)
+
+    @7  go to state 309
+
+
+state 309
+
+   57 variant: list_expression COLON LPAREN @7 . field_list @8 RPAREN SCOLON
+
+    K_CASE      shift, and go to state 206
+    IDENTIFIER  shift, and go to state 54
+
+    field_list           go to state 310
+    list_record_section  go to state 208
+    record_section       go to state 209
+    variant_part         go to state 210
+    list_identifier      go to state 211
+
+
+state 310
+
+   57 variant: list_expression COLON LPAREN @7 field_list . @8 RPAREN SCOLON
+
+    $default  reduce using rule 56 (@8)
+
+    @8  go to state 311
+
+
+state 311
+
+   57 variant: list_expression COLON LPAREN @7 field_list @8 . RPAREN SCOLON
+
+    RPAREN  shift, and go to state 312
+
+
+state 312
+
+   57 variant: list_expression COLON LPAREN @7 field_list @8 RPAREN . SCOLON
+
+    SCOLON  shift, and go to state 313
+
+
+state 313
+
+   57 variant: list_expression COLON LPAREN @7 field_list @8 RPAREN SCOLON .
+
+    $default  reduce using rule 57 (variant)

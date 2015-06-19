@@ -1,0 +1,17 @@
+CFLAGS =  -I"..\include" -DWIN32 -w-8027 -tWM -DBORLANDC
+CC = bcc32
+OBJS = libtype.obj core.obj btype.obj stream.obj udp.obj sql_help.obj test.obj opt.obj osdept.obj sql.tab.obj lex.sql.obj test.obj sql_resolve.obj count_window.obj timeSlide_window.obj timeTumble_window.obj
+ 
+all:	$(OBJS)
+	bcc32 -tWM -etest.exe $(OBJS)
+	
+	
+yacc:	sql.y
+	bison -d -p sql sql.y -o sql.tab.c
+
+lex:	sql.lex
+	flex -olex.sql.c -Psql sql.lex
+
+clean:
+	-del *.obj *.tds test.exe
+

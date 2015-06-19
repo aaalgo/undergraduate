@@ -1,0 +1,7 @@
+A = 0x20;
+CONST 5;
+STORE A;
+CONST 6;
+LOAD A;
+STOP : JMP STOP;
+END.

@@ -1,0 +1,6 @@
+	CONST	0xF0;
+	ANDI	0x0F;
+	ORI	0xFF;
+	ADDI	0x0F;
+STOP:	JMP	STOP;
+	END.
